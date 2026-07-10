@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "message-types.proto";
+
+option java_package = "com.boop.grpc";
+option java_multiple_files = true;
+option java_outer_classname = "KeycloakAdminProto";
+
+service KeycloakAdmin {
+  rpc getUserInfoById(GetUserByIdRequest) returns (GetUserReply) {}
+  rpc getAllUsersInfo(google.protobuf.Empty) returns (AllUsersReply) {}
+
+  rpc createUser(CreateUserRequest) returns (CreateUserReply) {}
+  rpc updateUser(UpdateUserRequest) returns (google.protobuf.Empty) {}
+  rpc deleteUser(DeleteUserRequest) returns (google.protobuf.Empty) {}
+
+  rpc getAllRoles(google.protobuf.Empty) returns (AllRolesReply) {}
+  rpc getRoleByName(GetRoleByNameRequest) returns (GetRoleReply) {}
+
+  rpc createRole(CreateRoleRequest) returns (google.protobuf.Empty) {}
+
+  rpc assignRole(AssignRoleToUserRequest) returns (google.protobuf.Empty) {}
+  rpc removeRole(RemoveRoleToUserRequest) returns (google.protobuf.Empty) {}
+}
