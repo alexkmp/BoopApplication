@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+option java_package = "com.boop.grpc";
+
+message GetUserByIdRequest {
+  string uuid = 1;
+}
+
+message GetUserReply {
+  string uuid = 1;
+  string login = 2;
+  optional string firstname = 3;
+  optional string lastName = 4;
+  string email = 5;
+  bool emailVerified = 6;
+  repeated GetRoleReply roleArray = 7;
+}
+
+message AllUsersReply {
+  repeated GetUserReply userArray = 1;
+}
+
+
+message CreateUserRequest {
+  string login = 1;
+  string password = 2;
+  string email = 3;
+  optional string firstName = 4;
+  optional string lastName = 5;
+}
+
+message CreateUserReply {
+  string uuid = 1;
+}
+
+message UpdateUserRequest {
+  string uuid = 1;
+  optional string firstName = 2;
+  optional string lastName = 3;
+  optional string password = 4;
+  optional string email = 5;
+}
+
+message DeleteUserRequest {
+  string uuid = 1;
+}
+
+message GetRoleByNameRequest {
+  string name = 1;
+}
+
+message GetRoleReply {
+  string name = 1;
+  optional string description = 2;
+}
+
+message AllRolesReply {
+  repeated GetRoleReply roleArray = 1;
+}
+
+message CreateRoleRequest {
+  string name = 1;
+  optional string description = 2;
+}
+
+message AssignRoleToUserRequest {
+  string uuid = 1;
+  string roleName = 2;
+}
+
+message RemoveRoleToUserRequest {
+  string uuid = 1;
+  string roleName = 2;
+}

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.11.xsd">
+
+    <changeSet id="1" author="alex">
+        <createTable tableName="pet_specialist">
+            <column name="id" type="bigserial" remarks="ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="login" type="varchar(20)" remarks="Login">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone" type="varchar(20)" remarks="Phone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(50)" remarks="E-mail">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="varchar(50)" remarks="Firstname">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="varchar(50)" remarks="Lastname">
+                <constraints nullable="false"/>
+            </column>
+            <column name="about" type="varchar(500)" remarks="About">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="work_experience">
+            <column name="id" type="bigserial" remarks="ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="pet_specialist_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="varchar(50)" remarks="Title">
+                <constraints nullable="false"/>
+            </column>
+            <column name="job_title" type="varchar(50)" remarks="Job Title">
+                <constraints nullable="false"/>
+            </column>
+            <column name="job_duration" type="integer" remarks="Job duration (months)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="specialist_service">
+            <column name="id" type="bigserial" remarks="ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="pet_specialist_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="varchar(50)" remarks="Title">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="decimal(7, 2)" remarks="Price">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="specialization">
+            <column name="id" type="bigserial" remarks="ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="pet_specialist_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="varchar(50)" remarks="Title">
+                <constraints nullable="false"/>
+            </column>
+            <column name="factor" type="integer" remarks="Coefficient">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint constraintName="fk_pet_specialist_specialization"
+                                 baseTableName="specialization"
+                                 baseColumnNames="pet_specialist_id"
+                                 referencedTableName="pet_specialist"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_pet_specialist_specialist_service"
+                                 baseTableName="specialist_service"
+                                 baseColumnNames="pet_specialist_id"
+                                 referencedTableName="pet_specialist"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_pet_specialist_work_experience"
+                                 baseTableName="work_experience"
+                                 baseColumnNames="pet_specialist_id"
+                                 referencedTableName="pet_specialist"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: boop-keycloak-admin
+  grpc:
+    server:
+      port: 9090
+
+keycloak:
+  clientUuid: ${KEYCLOAK_APPLICATION_CLIENT_UUID}
+  endpoint: http://${keycloak.host}:8080
+  admin-client-id: ${KEYCLOAK_ADMIN_CLIENT_ID}
+  admin-client-secret: ${KEYCLOAK_ADMIN_CLIENT_SECRET}
+
+---
+spring.config.activate.on-profile: docker
+server.port: 80
+
+---
+spring.config.activate.on-profile: prod
+db.host: host.minikube.internal

@@ -1,0 +1,109 @@
+server.port: 8081
+
+spring:
+  application:
+    name: boop-pet-owners
+  http:
+    codec:
+      log-request-details: true
+  datasource:
+    url: jdbc:postgresql://${db.host}:5432/${POSTGRES_DB}?sslmode=disable
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/changelog-master.xml
+  info:
+    developer:
+      name: Alex Kumpel
+      email: deathkid777@gmail.com
+    api:
+      version: 1.0
+grpc:
+  client:
+    keycloakAdmin:
+      address: static://keycloak-admin:9090
+      negotiationType: plaintext
+
+#resilience4j:
+#  circuitbreaker:
+#    instances:
+#      KeycloakApiCircuitBreaker:
+#        registerHealthIndicator: true
+#        slidingWindowSize: 5
+#        minimumNumberOfCalls: 5
+#        failureRateThreshold: 50
+#        waitDurationInOpenState: 3s
+#        permittedNumberOfCallsInHalfOpenState: 3
+#        eventConsumerBufferSize: 10
+#  retry:
+#    configs:
+#      default:
+#        max-attempts: 3
+#        wait-duration: 10s
+#    metrics:
+#      legacy:
+#        enabled: true
+#    enabled: true
+
+management:
+  endpoints:
+    web:
+      base-path: /owners-actuator
+      exposure:
+        include: "*"
+  endpoint:
+    configprops:
+      show-values: always
+    health:
+      show-details: always
+      status:
+        order: events-down, fatal, down, out-of-service, unknown, up
+    shutdown:
+      enabled: true
+    info:
+      env:
+        enabled: true
+
+db.host: localhost
+
+jwt:
+  auth:
+    converter:
+      resource-id: boop-application-client
+      principle-attribute: preferred_username
+
+logging:
+  level:
+#    org.springframework.security: TRACE
+#    org.springframework.web: TRACE
+#    org.springframework.boot.autoconfigure: INFO
+
+springdoc:
+  packages-to-scan: com.boop.owners
+  paths-to-match: /**
+  cache.disabled: true
+  api-docs:
+    path: /owners/openapi/v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /owners/openapi/swagger-ui.html
+    oauth:
+      clientId: ${KEYCLOAK_OAUTH_CLIENT_ID}
+      clientSecret: ${KEYCLOAK_OAUTH_CLIENT_SECRET}
+  oAuthFlow:
+    authorizationUrl: http://${keycloak.host}:8080/realms/${keycloak.realm}/protocol/openid-connect/auth
+    tokenUrl: http://${keycloak.host}:8080/realms/${keycloak.realm}/protocol/openid-connect/token
+
+---
+spring.config.activate.on-profile: docker
+server.port: 80
+db.host: postgres
+#db.host: postgres.hands-on.svc.cluster.local
+
+---
+spring.config.activate.on-profile: prod
+db.host: host.minikube.internal

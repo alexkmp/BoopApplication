@@ -1,0 +1,64 @@
+server:
+  shutdown: graceful
+  forward-headers-strategy: framework
+#debug: true
+
+spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
+  lifecycle:
+    timeout-per-shutdown-phase: 10s
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://${keycloak.host}:8080/realms/${keycloak.realm}
+          jwk-set-uri: http://${keycloak.host}:8080/realms/${keycloak.realm}/protocol/openid-connect/certs
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: "ALWAYS"
+    gateway:
+      access: read_only
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1.0
+    export:
+      zipkin:
+        endpoint: http://${zipkin.host}:9411/api/v2/spans
+
+keycloak:
+  realm: boop-app-realm
+  host: localhost
+zipkin:
+  host: localhost
+
+springdoc:
+  cache:
+    disabled: true
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+  level:
+    com.boop: INFO
+
+api:
+  responseCodes:
+    ok.description: OK
+    badRequest.description: Bad Request, invalid format of the request. See response message for more information
+    notFound.description: Not found, the specified id does not exist
+    unprocessableEntity.description: Unprocessable entity, input parameters caused the processing to fail. See response message for more information
+
+---
+spring.config.activate.on-profile: docker
+keycloak.host: keycloak
+zipkin.host: zipkin-server
+#keycloak.host: keycloak.hands-on.svc.cluster.local
+#zipkin.host: zipkin-server.hands-on.svc.cluster.local
