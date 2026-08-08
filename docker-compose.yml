@@ -32,9 +32,17 @@ services:
       - KC_BOOTSTRAP_ADMIN_PASSWORD=${KC_ADMIN_PASSWORD}
       - KC_HOSTNAME=${KC_HOSTNAME}
       - KC_HOSTNAME_BACKCHANNEL_DYNAMIC=${KC_HOSTNAME_BACKCHANNEL_DYNAMIC}
-    command: start-dev
+    command: [
+      "start-dev",
+#      "--import-realm"
+      "-Dkeycloak.migration.action=export",
+      "-Dkeycloak.migration.provider=singleFile",
+      "-Dkeycloak.migration.usersExportStrategy=REALM_FILE",
+      "-Dkeycloak.migration.file=/tmp/export/realms-export.json"
+    ]
     volumes:
-      - $PWD/keycloak/:/opt/keycloak/data/import/
+      - $PWD/keycloak/realms/data/import:/opt/keycloak/data/import
+      - $PWD/keycloak/realms/data/export:/tmp/export
 
   kafka1:
     image: confluentinc/cp-kafka:7.8.0
