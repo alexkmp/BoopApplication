@@ -33,8 +33,8 @@ services:
       - KC_HOSTNAME=${KC_HOSTNAME}
       - KC_HOSTNAME_BACKCHANNEL_DYNAMIC=${KC_HOSTNAME_BACKCHANNEL_DYNAMIC}
     command: start-dev
-#    volumes:
-#      - $PWD/keycloak/:/opt/keycloak/data/import/
+    volumes:
+      - $PWD/keycloak/:/opt/keycloak/data/import/
 
   kafka1:
     image: confluentinc/cp-kafka:7.8.0

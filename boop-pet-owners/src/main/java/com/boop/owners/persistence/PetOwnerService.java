@@ -10,11 +10,13 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class PetOwnerService {
 
@@ -42,7 +44,8 @@ public class PetOwnerService {
                 petOwnerRequest.phone(),
                 petOwnerRequest.email(),
                 petOwnerRequest.firstName(),
-                petOwnerRequest.lastName()
+                petOwnerRequest.lastName(),
+                petOwnerRequest.about()
         );
         return petOwnerMapper.toResponse(petOwnerRepository.save(owner));
     }

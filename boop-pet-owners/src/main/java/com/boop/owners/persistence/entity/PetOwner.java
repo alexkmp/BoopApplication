@@ -11,6 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 public class PetOwner extends BaseEntity {
 
@@ -34,6 +35,7 @@ public class PetOwner extends BaseEntity {
     @Column(name = "last_name")
     String lastName;
 
+    @NonNull
     @Column(name = "about")
     String about;
 

@@ -51,8 +51,8 @@
             <column name="modify_date" type="timestamp" remarks="Modify date">
                 <constraints nullable="false"/>
             </column>
-            <column name="pet_owner_id" type="bigint" remarks="ID">
-                <constraints primaryKey="true" nullable="false"/>
+            <column name="pet_owner_id" type="bigint" remarks="Pet owner reference">
+                <constraints nullable="false"/>
             </column>
             <column name="title" type="varchar(255)" remarks="Note's title">
                 <constraints nullable="false"/>
@@ -74,13 +74,16 @@
             <column name="modify_date" type="timestamp" remarks="Modify date">
                 <constraints nullable="false"/>
             </column>
+            <column name="pet_owner_id" type="bigint" remarks="Pet owner reference">
+                <constraints nullable="false"/>
+            </column>
             <column name="name" type="varchar(20)" remarks="Pet name">
                 <constraints nullable="false"/>
             </column>
             <column name="pet_type" type="varchar(25)" remarks="Pet type">
                 <constraints nullable="false"/>
             </column>
-            <column name="breed" type="varchar(20)" remarks="Pet breed">
+            <column name="breed_id" type="bigint" remarks="Pet breed reference">
                 <constraints nullable="false"/>
             </column>
             <column name="character_traits" type="varchar(255) []" remarks="Character traits">
@@ -120,7 +123,7 @@
             <column name="pet_id" type="bigint" remarks="Reference to pet">
                 <constraints nullable="false"/>
             </column>
-            <column name="type" type="enum" remarks="Medical action Type">
+            <column name="type" type="varchar(25)" remarks="Medical action Type">
                 <constraints nullable="false"/>
             </column>
             <column name="description" type="varchar(255)" remarks="Description">
