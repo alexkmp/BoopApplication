@@ -2,10 +2,17 @@ package com.boop.owners.mapper;
 
 import com.boop.owners.dto.PetOwnerResponse;
 import com.boop.owners.persistence.entity.PetOwner;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-public class PetOwnerMapper {
+@Component
+@RequiredArgsConstructor
+public class PetOwnerMapper implements ResponseMapper<PetOwnerResponse, PetOwner> {
 
-    public static PetOwnerResponse toUserResponse(PetOwner petOwner)  {
+    private final PetMapper petMapper;
+    private final NoteMapper noteMapper;
+
+    public PetOwnerResponse toResponse(PetOwner petOwner)  {
         return new PetOwnerResponse(
                 petOwner.getId(),
                 petOwner.getLogin(),
@@ -13,7 +20,9 @@ public class PetOwnerMapper {
                 petOwner.getEmail(),
                 petOwner.getFirstName(),
                 petOwner.getLastName(),
-                petOwner.getAbout()
+                petOwner.getAbout(),
+                petMapper.toResponses(petOwner.getPets()),
+                noteMapper.toResponses(petOwner.getNotes())
         );
     }
 }
