@@ -1,5 +1,7 @@
 package com.boop.owners.dto;
 
+import java.util.List;
+
 public record PetOwnerResponse(
         Long id,
         String login,
@@ -7,5 +9,7 @@ public record PetOwnerResponse(
         String email,
         String firstName,
         String lastName,
-        String about
+        String about,
+        List<PetResponse> pets,
+        List<NoteResponse> notes
 ) {}

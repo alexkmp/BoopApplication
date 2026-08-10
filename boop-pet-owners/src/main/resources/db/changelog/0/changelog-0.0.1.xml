@@ -10,6 +10,15 @@
             <column name="id" type="bigserial" remarks="ID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="version" type="bigint" remarks="Version">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date" type="timestamp" remarks="Creation date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modify_date" type="timestamp" remarks="Modify date">
+                <constraints nullable="false"/>
+            </column>
             <column name="login" type="varchar(20)" remarks="Login">
                 <constraints nullable="false"/>
             </column>
@@ -29,5 +38,166 @@
                 <constraints nullable="true"/>
             </column>
         </createTable>
+        <createTable tableName="note">
+            <column name="id" type="bigserial" remarks="ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="version" type="bigint" remarks="Version">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date" type="timestamp" remarks="Creation date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modify_date" type="timestamp" remarks="Modify date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pet_owner_id" type="bigint" remarks="Pet owner reference">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="varchar(255)" remarks="Note's title">
+                <constraints nullable="false"/>
+            </column>
+            <column name="note_text" type="text" remarks="Note's text">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="pet">
+            <column name="id" type="bigserial" remarks="ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="version" type="bigint" remarks="Version">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date" type="timestamp" remarks="Creation date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modify_date" type="timestamp" remarks="Modify date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pet_owner_id" type="bigint" remarks="Pet owner reference">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(20)" remarks="Pet name">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pet_type" type="varchar(25)" remarks="Pet type">
+                <constraints nullable="false"/>
+            </column>
+            <column name="breed_id" type="bigint" remarks="Pet breed reference">
+                <constraints nullable="false"/>
+            </column>
+            <column name="character_traits" type="varchar(255) []" remarks="Character traits">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="pet_breed">
+            <column name="id" type="bigserial" remarks="ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="version" type="bigint" remarks="Version">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date" type="timestamp" remarks="Creation date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modify_date" type="timestamp" remarks="Modify date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)" remarks="Breed name">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="medical_action">
+            <column name="id" type="bigserial" remarks="ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="version" type="bigint" remarks="Version">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date" type="timestamp" remarks="Creation date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modify_date" type="timestamp" remarks="Modify date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pet_id" type="bigint" remarks="Reference to pet">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(25)" remarks="Medical action Type">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)" remarks="Description">
+                <constraints nullable="false"/>
+            </column>
+            <column name="action_date" type="timestamp" remarks="Date of medical action">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expiration_date" type="date" remarks="Medical Action expiration date">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="medical_examination">
+            <column name="id" type="bigserial" remarks="ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="version" type="bigint" remarks="Version">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date" type="timestamp" remarks="Creation date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modify_date" type="timestamp" remarks="Modify date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pet_id" type="bigint" remarks="Reference to pet">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)" remarks="Description">
+                <constraints nullable="false"/>
+            </column>
+            <column name="examination_date" type="timestamp" remarks="Date of medical examination">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expiration_date" type="date" remarks="Medical Action expiration date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="report" type="text" remarks="Report of results medical examination">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint constraintName="fk_pet_owner_pet"
+                                 baseTableName="pet"
+                                 baseColumnNames="pet_owner_id"
+                                 referencedTableName="pet_owner"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint constraintName="fk_pet_owner_note"
+                                 baseTableName="note"
+                                 baseColumnNames="pet_owner_id"
+                                 referencedTableName="pet_owner"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint constraintName="fk_pet_medical_action"
+                                 baseTableName="medical_action"
+                                 baseColumnNames="pet_id"
+                                 referencedTableName="pet"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint constraintName="fk_pet_medical_examination"
+                                 baseTableName="medical_examination"
+                                 baseColumnNames="pet_id"
+                                 referencedTableName="pet"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint constraintName="fk_pet_pet_breed"
+                                 baseTableName="pet"
+                                 baseColumnNames="breed_id"
+                                 referencedTableName="pet_breed"
+                                 referencedColumnNames="id"/>
     </changeSet>
 </databaseChangeLog>

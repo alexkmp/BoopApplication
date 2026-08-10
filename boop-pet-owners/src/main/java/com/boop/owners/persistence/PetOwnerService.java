@@ -1,45 +1,40 @@
 package com.boop.owners.persistence;
 
+import com.boop.exception.BoopNotFoundException;
 import com.boop.owners.dto.PetOwnerRequest;
 import com.boop.owners.dto.PetOwnerResponse;
 import com.boop.owners.mapper.PetOwnerMapper;
 import com.boop.owners.persistence.entity.PetOwner;
 import com.boop.owners.persistence.repository.PetOwnerRepository;
-import com.boop.exception.BoopNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static com.boop.owners.mapper.PetOwnerMapper.toUserResponse;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class PetOwnerService {
 
-    private PetOwnerRepository petOwnerRepository;
+    private final PetOwnerMapper petOwnerMapper;
+    private final PetOwnerRepository petOwnerRepository;
 
     private Logger log = LoggerFactory.getLogger(PetOwnerService.class);
 
-    public PetOwnerService(PetOwnerRepository petOwnerRepository) {
-        this.petOwnerRepository = petOwnerRepository;
-    }
-
     public List<PetOwnerResponse> getAllPetOwners() {
         log.info("Get all pet owners");
-        return petOwnerRepository.findAll().stream().map(PetOwnerMapper::toUserResponse).collect(Collectors.toUnmodifiableList());
+        return petOwnerMapper.toResponses(petOwnerRepository.findAll());
     }
 
     public PetOwnerResponse getById(Long id) throws BoopNotFoundException {
         log.info("Get pet owner by id: {}", id);
         Optional<PetOwner> owner = petOwnerRepository.findById(id);
         if (!owner.isPresent()) throw new BoopNotFoundException("Владелец с id:" + id + "не найден");
-        return toUserResponse(owner.get());
+        return petOwnerMapper.toResponse(owner.get());
     }
 
     public PetOwnerResponse create(PetOwnerRequest petOwnerRequest) {
@@ -49,9 +44,10 @@ public class PetOwnerService {
                 petOwnerRequest.phone(),
                 petOwnerRequest.email(),
                 petOwnerRequest.firstName(),
-                petOwnerRequest.lastName()
+                petOwnerRequest.lastName(),
+                petOwnerRequest.about()
         );
-        return toUserResponse(petOwnerRepository.save(owner));
+        return petOwnerMapper.toResponse(petOwnerRepository.save(owner));
     }
 
     public PetOwnerResponse update(Long id, PetOwnerRequest petOwnerRequest) throws BoopNotFoundException {
@@ -62,7 +58,7 @@ public class PetOwnerService {
             o.setPhone(petOwnerRequest.phone());
         },() -> new BoopNotFoundException("Владелец с id:" + id + "не найден"));
 
-        return toUserResponse(petOwnerRepository.save(owner.get()));
+        return petOwnerMapper.toResponse(petOwnerRepository.save(owner.get()));
     }
 
     public Boolean delete(Long id) {
