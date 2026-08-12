@@ -1,4 +1,4 @@
-package com.boop.owners.mapper;
+package com.boop.mapper;
 
 import java.util.Collections;
 import java.util.List;

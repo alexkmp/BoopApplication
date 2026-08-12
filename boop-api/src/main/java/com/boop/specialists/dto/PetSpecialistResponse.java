@@ -1,5 +1,7 @@
 package com.boop.specialists.dto;
 
+import java.util.List;
+
 public record PetSpecialistResponse(
         Long id,
         String login,
@@ -7,5 +9,8 @@ public record PetSpecialistResponse(
         String email,
         String firstName,
         String lastName,
-        String about
+        String about,
+        List<SpecializationResponse> specializations,
+        List<WorkExperienceResponse> workExperiences,
+        List<SpecialistServiceResponse> specialistServices
 ) {}

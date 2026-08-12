@@ -1,5 +1,6 @@
 package com.boop.owners.mapper;
 
+import com.boop.mapper.ResponseMapper;
 import com.boop.owners.dto.PetResponse;
 import com.boop.owners.persistence.entity.Pet;
 import lombok.RequiredArgsConstructor;

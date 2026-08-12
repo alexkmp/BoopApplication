@@ -37,10 +37,10 @@
             <column name="pet_specialist_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="title" type="varchar(50)" remarks="Title">
+            <column name="company_name" type="varchar(255)" remarks="Title">
                 <constraints nullable="false"/>
             </column>
-            <column name="job_title" type="varchar(50)" remarks="Job Title">
+            <column name="job_title" type="varchar(255)" remarks="Job Title">
                 <constraints nullable="false"/>
             </column>
             <column name="job_duration" type="integer" remarks="Job duration (months)">
