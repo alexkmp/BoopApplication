@@ -5,6 +5,7 @@ import com.boop.specialists.api.PetSpecialistOperations;
 import com.boop.specialists.dto.PetSpecialistRequest;
 import com.boop.specialists.dto.PetSpecialistResponse;
 import com.boop.specialists.persistence.PetSpecialistService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
@@ -12,13 +13,10 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class PetSpecialistController implements PetSpecialistOperations {
 
-    private PetSpecialistService petSpecialistService;
-
-    public PetSpecialistController(PetSpecialistService petSpecialistService) {
-        this.petSpecialistService = petSpecialistService;
-    }
+    private final PetSpecialistService petSpecialistService;
 
     @Override
     @PreAuthorize("hasAnyRole('SPECIALIST')")
