@@ -6,37 +6,35 @@ import com.boop.specialists.dto.PetSpecialistResponse;
 import com.boop.specialists.mapper.PetSpecialistMapper;
 import com.boop.specialists.persistence.entity.PetSpecialist;
 import com.boop.specialists.persistence.repository.PetSpecialistRepository;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static com.boop.specialists.mapper.PetSpecialistMapper.toSpecialistResponse;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class PetSpecialistService {
 
-    private PetSpecialistRepository petSpecialistRepository;
+    private final PetSpecialistRepository petSpecialistRepository;
+    private final PetSpecialistMapper petSpecialistMapper;
 
     private Logger log = LoggerFactory.getLogger(PetSpecialistService.class);
 
-    public PetSpecialistService(PetSpecialistRepository petSpecialistRepository) {
-        this.petSpecialistRepository = petSpecialistRepository;
-    }
-
     public List<PetSpecialistResponse> getAllPetSpecialists() {
         log.info("Get all pet specialists");
-        return petSpecialistRepository.findAll().stream().map(PetSpecialistMapper::toSpecialistResponse).collect(Collectors.toUnmodifiableList());
+        return petSpecialistMapper.toResponses(petSpecialistRepository.findAll());
     }
 
     public PetSpecialistResponse getById(Long id) throws BoopNotFoundException {
         log.info("Get pet specialist by id: {}", id);
         Optional<PetSpecialist> specialist = petSpecialistRepository.findById(id);
         if (!specialist.isPresent()) throw new BoopNotFoundException("Специалист с id:" + id + "не найден");
-        return toSpecialistResponse(specialist.get());
+        return petSpecialistMapper.toResponse(specialist.get());
     }
 
     public PetSpecialistResponse create(PetSpecialistRequest petSpecialistRequest) {
@@ -46,9 +44,10 @@ public class PetSpecialistService {
                 petSpecialistRequest.phone(),
                 petSpecialistRequest.email(),
                 petSpecialistRequest.firstName(),
-                petSpecialistRequest.lastName()
+                petSpecialistRequest.lastName(),
+                petSpecialistRequest.about()
         );
-        return toSpecialistResponse(petSpecialistRepository.save(specialist));
+        return petSpecialistMapper.toResponse(petSpecialistRepository.save(specialist));
     }
 
     public PetSpecialistResponse update(Long id, PetSpecialistRequest petOwnerRequest) throws BoopNotFoundException {
@@ -59,7 +58,7 @@ public class PetSpecialistService {
             s.setPhone(petOwnerRequest.phone());
         },() -> new BoopNotFoundException("Владелец с id:" + id + "не найден"));
 
-        return toSpecialistResponse(petSpecialistRepository.save(specialist.get()));
+        return petSpecialistMapper.toResponse(petSpecialistRepository.save(specialist.get()));
     }
 
     public Boolean delete(Long id) {

@@ -1,5 +1,6 @@
 package com.boop.owners.mapper;
 
+import com.boop.mapper.ResponseMapper;
 import com.boop.owners.dto.NoteResponse;
 import com.boop.owners.persistence.entity.Note;
 import org.springframework.stereotype.Component;
