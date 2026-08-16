@@ -15,6 +15,8 @@ java {
 
 ext {
 	springBootVersion = '4.0.6'
+	openApiVersion = '3.0.2'
+	grpcStarterVersion = '3.1.0.RELEASE'
 }
 
 
@@ -23,18 +25,17 @@ repositories {
 }
 
 dependencies {
-	implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
-	implementation 'org.springdoc:springdoc-openapi-starter-common:3.0.2'
-
 	implementation project(':boop-api')
 
-	implementation 'net.devh:grpc-client-spring-boot-starter:3.1.0.RELEASE'
-	implementation 'net.devh:grpc-server-spring-boot-starter:3.1.0.RELEASE'
+	implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+	implementation "org.springdoc:springdoc-openapi-starter-common:${openApiVersion}"
+
+	implementation "net.devh:grpc-client-spring-boot-starter:${grpcStarterVersion}"
+	implementation "net.devh:grpc-server-spring-boot-starter:${grpcStarterVersion}"
 
 	implementation 'io.micrometer:micrometer-core'
 
-	//implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.security:spring-security-oauth2-resource-server'
+	implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-resource-server'
 	implementation 'org.springframework.security:spring-security-oauth2-jose'
 
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'

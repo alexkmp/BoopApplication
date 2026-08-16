@@ -17,6 +17,7 @@ java {
 ext {
 	springBootVersion = '4.0.6'
 	grpcVersion = '1.81.0'
+	openApiVersion = '3.0.2'
 }
 
 repositories {
@@ -48,7 +49,7 @@ dependencyManagement {
 dependencies {
 	implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	implementation 'org.springdoc:springdoc-openapi-starter-common:3.0.2'
+	implementation "org.springdoc:springdoc-openapi-starter-common:${openApiVersion}"
 
 	implementation "io.grpc:grpc-netty-shaded:${grpcVersion}"
 	implementation "io.grpc:grpc-protobuf:${grpcVersion}"
