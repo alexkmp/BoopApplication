@@ -2,12 +2,11 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '4.0.6'
 	id 'io.spring.dependency-management' version '1.1.7'
-	//id 'io.freefair.lombok' version '9.5.0'
 }
 
 group = 'com.boop.pet.owners'
 version = '0.0.1-SNAPSHOT'
-description = 'Pet owner project for Boop Application'
+description = 'Pet owner service for Boop Application'
 
 java {
 	toolchain {
@@ -16,7 +15,10 @@ java {
 }
 
 ext {
-	set('springCloudVersion', "2025.0.1")
+	springCloudVersion = '2025.1.1'
+	openApiVersion = '3.0.2'
+	logbackVersion = '7.4'
+	hypersistenceUtilsVersion = '3.15.3'
 }
 
 repositories {
@@ -34,7 +36,7 @@ dependencies {
 	implementation project(':boop-core')
 
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:3.0.2'
+	implementation "org.springdoc:springdoc-openapi-starter-webflux-ui:${openApiVersion}"
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -45,11 +47,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-zipkin'
 
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-resource-server'
-	implementation 'org.springframework.security:spring-security-oauth2-jose'
 
 	implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', classifier: 'osx-aarch_64'
-	implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
+	implementation "net.logstash.logback:logstash-logback-encoder:${logbackVersion}"
 
 	//implementation "org.springframework.boot:spring-boot-starter-aspectj"
 	//implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j'
@@ -58,14 +58,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-	implementation 'io.hypersistence:hypersistence-utils-hibernate-71:3.15.3'
+	implementation "io.hypersistence:hypersistence-utils-hibernate-71:${hypersistenceUtilsVersion}"
 
 	implementation 'org.springframework.boot:spring-boot-starter-liquibase'
 	runtimeOnly 'org.postgresql:postgresql'
-
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 springBoot {
