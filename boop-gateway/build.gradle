@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.boop.cloud'
 version = '0.0.1-SNAPSHOT'
-description = 'Boop gateway for Boop Application'
+description = 'Gateway for Boop Application'
 
 java {
 	toolchain {
@@ -23,7 +23,9 @@ jar {
 }
 
 ext {
-	set('springCloudVersion', "2025.1.1")
+	springCloudVersion = '2025.1.1'
+	openApiVersion = '3.0.2'
+	logbackVersion = '7.4'
 }
 
 dependencyManagement {
@@ -43,17 +45,17 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-zipkin'
 
 	implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', classifier: 'osx-aarch_64'
-	implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
+	implementation "net.logstash.logback:logstash-logback-encoder:${logbackVersion}"
 
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-resource-server'
 	implementation 'org.springframework.security:spring-security-oauth2-jose'
 
-	implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:3.0.2'
+	implementation "org.springdoc:springdoc-openapi-starter-webflux-ui:${openApiVersion}"
 
-    testImplementation 'com.github.dasniko:testcontainers-keycloak:3.2.0'
-	testImplementation 'org.testcontainers:junit-jupiter:1.19.6'
+    //testImplementation 'com.github.dasniko:testcontainers-keycloak:3.2.0'
+	//testImplementation 'org.testcontainers:junit-jupiter:1.19.6'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }

@@ -17,21 +17,33 @@ repositories {
 	mavenCentral()
 }
 
+ext {
+	springBootVersion = '4.0.6'
+	openApiVersion = '3.0.2'
+	grpcStarterVersion = '3.1.0.RELEASE'
+	logbackVersion = '7.4'
+	keycloakCoreVersion = '26.6.1'
+	keycloakAdminClientVersion = '26.0.9'
+	jakartaValidationApiVersion = '3.0.1'
+	hibernateValidatorVersion = '7.0.2.Final'
+
+}
+
 dependencies {
 	implementation project(':boop-api')
 
-	implementation("org.keycloak:keycloak-core:26.6.1")
-	implementation("org.keycloak:keycloak-admin-client:26.0.9")
+	implementation "org.keycloak:keycloak-core:${keycloakCoreVersion}"
+	implementation "org.keycloak:keycloak-admin-client:${keycloakAdminClientVersion}"
 
 	implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', classifier: 'osx-aarch_64'
 
-	implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
+	implementation "net.logstash.logback:logstash-logback-encoder:${logbackVersion}"
 
-	implementation 'net.devh:grpc-server-spring-boot-starter:3.1.0.RELEASE'
+	implementation "net.devh:grpc-server-spring-boot-starter:${grpcStarterVersion}"
 	implementation 'org.springframework.boot:spring-boot-starter-zipkin'
 
-	implementation 'jakarta.validation:jakarta.validation-api:3.0.1'
-	implementation 'org.hibernate:hibernate-validator:7.0.2.Final'
+	implementation "jakarta.validation:jakarta.validation-api:${jakartaValidationApiVersion}"
+	implementation "org.hibernate:hibernate-validator:${hibernateValidatorVersion}"
 
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter'
