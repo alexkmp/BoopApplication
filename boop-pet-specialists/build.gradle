@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.boop.pet.specialists'
 version = '0.0.1-SNAPSHOT'
-description = 'Pet Specialist Service for Boop Application'
+description = 'Pet specialist service for Boop Application'
 
 java {
 	toolchain {

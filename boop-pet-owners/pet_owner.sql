@@ -1,2 +1,0 @@
-insert into public.pet_owner (id, login, phone, email, first_name, last_name, about)
-values  (1, 'vox_magica', '+7(904)333-41-03', 'deathkid777@gmail.com', 'Alex', 'Kumpel', 'Russian guy, owner of Motka');
