@@ -207,6 +207,26 @@ services:
       - keycloak
       - postgres
 
+  service-marketplace:
+    build: boop-service-marketplace
+    image: service-marketplace-domain/boop-service-marketplace
+    container_name: boop-service-marketplace
+    mem_limit: 512m
+    environment:
+      - LOGGING_CONFIG=/config-rep/logback.xml
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CONFIG_LOCATION=file:/config-rep/application.yml,file:/config-rep/boop-service-marketplace.yml
+      - POSTGRES_PASSWORD=${POSTGRES_SERVICE_MARKETPLACE_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_SERVICE_MARKETPLACE_USER}
+      - POSTGRES_DB=${POSTGRES_DATABASE_SERVICE_MARKETPLACE}
+      - KEYCLOAK_OAUTH_CLIENT_ID=${KEYCLOAK_OAUTH_CLIENT_ID}
+      - KEYCLOAK_OAUTH_CLIENT_SECRET=${KEYCLOAK_OAUTH_CLIENT_SECRET}
+    volumes:
+      - $PWD/config-rep:/config-rep
+    depends_on:
+      - keycloak
+      - postgres
+
   gateway:
     build: boop-gateway
     image: boop-gateway
