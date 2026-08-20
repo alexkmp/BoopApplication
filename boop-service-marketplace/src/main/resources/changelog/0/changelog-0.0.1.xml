@@ -10,6 +10,15 @@
             <column name="id" type="bigserial" remarks="ID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="version" type="bigint" remarks="Version">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date" type="timestamp" remarks="Creation date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modify_date" type="timestamp" remarks="Modify date">
+                <constraints nullable="false"/>
+            </column>
             <column name="request_type" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
@@ -25,17 +34,29 @@
             <column name="end_date" type="timestamp" remarks="End date">
                 <constraints nullable="false"/>
             </column>
-            <column name="price_start_range" type="decimal(7, 2)" remarks="Price start range">
+            <column name="price_min" type="decimal(7, 2)" remarks="Price min">
                 <constraints nullable="false"/>
             </column>
-            <column name="price_end_range" type="decimal(7, 2)" remarks="Price end range">
+            <column name="price_max" type="decimal(7, 2)" remarks="Price max">
                 <constraints nullable="false"/>
             </column>
         </createTable>
 
-        <createTable tableName="response">
+        <createTable tableName="specialist_response">
             <column name="id" type="bigserial" remarks="ID">
                 <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="version" type="bigint" remarks="Version">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date" type="timestamp" remarks="Creation date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modify_date" type="timestamp" remarks="Modify date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="service_request_id" type="bigint" remarks="Service request reference">
+                <constraints nullable="false"/>
             </column>
             <column name="specialist_id" type="bigint" remarks="Specialist id">
                 <constraints nullable="false"/>
@@ -45,9 +66,21 @@
             </column>
         </createTable>
 
-        <createTable tableName="specialist_review">
+        <createTable tableName="service_review">
             <column name="id" type="bigserial" remarks="ID">
                 <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="version" type="bigint" remarks="Version">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date" type="timestamp" remarks="Creation date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modify_date" type="timestamp" remarks="Modify date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="service_request_id" type="bigint" remarks="Service request reference">
+                <constraints nullable="false"/>
             </column>
             <column name="reviewer_id" type="bigint" remarks="Reviewer id">
                 <constraints nullable="false"/>
@@ -55,10 +88,7 @@
             <column name="review_type" type="varchar(50)" remarks="Review type">
                 <constraints nullable="false"/>
             </column>
-            <column name="service_request_id" type="text" remarks="Message">
-                <constraints nullable="false"/>
-            </column>
-            <column name="message" type="text" remarks="Message">
+            <column name="description" type="text" remarks="Description">
                 <constraints nullable="false"/>
             </column>
             <column name="rating" type="int" remarks="Rating">
@@ -67,7 +97,13 @@
         </createTable>
 
         <addForeignKeyConstraint constraintName="fk_service_request_review"
-                                 baseTableName="specialist_review"
+                                 baseTableName="service_review"
+                                 baseColumnNames="service_request_id"
+                                 referencedTableName="service_request"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_service_request_response"
+                                 baseTableName="response"
                                  baseColumnNames="service_request_id"
                                  referencedTableName="service_request"
                                  referencedColumnNames="id"/>
