@@ -6,7 +6,7 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.11.xsd">
 
     <changeSet id="1" author="alex">
-        <createTable tableName="service_request">
+        <createTable tableName="service_claim">
             <column name="id" type="bigserial" remarks="ID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -19,7 +19,7 @@
             <column name="modify_date" type="timestamp" remarks="Modify date">
                 <constraints nullable="false"/>
             </column>
-            <column name="request_type" type="varchar(50)">
+            <column name="claim_type" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
             <column name="status" type="varchar(50)" remarks="Status">
@@ -42,7 +42,7 @@
             </column>
         </createTable>
 
-        <createTable tableName="specialist_response">
+        <createTable tableName="specialist_bid">
             <column name="id" type="bigserial" remarks="ID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -55,7 +55,7 @@
             <column name="modify_date" type="timestamp" remarks="Modify date">
                 <constraints nullable="false"/>
             </column>
-            <column name="service_request_id" type="bigint" remarks="Service request reference">
+            <column name="service_claim_id" type="bigint" remarks="Service request reference">
                 <constraints nullable="false"/>
             </column>
             <column name="specialist_id" type="bigint" remarks="Specialist id">
@@ -79,7 +79,7 @@
             <column name="modify_date" type="timestamp" remarks="Modify date">
                 <constraints nullable="false"/>
             </column>
-            <column name="service_request_id" type="bigint" remarks="Service request reference">
+            <column name="service_claim_id" type="bigint" remarks="Service request reference">
                 <constraints nullable="false"/>
             </column>
             <column name="reviewer_id" type="bigint" remarks="Reviewer id">
@@ -98,14 +98,14 @@
 
         <addForeignKeyConstraint constraintName="fk_service_request_review"
                                  baseTableName="service_review"
-                                 baseColumnNames="service_request_id"
-                                 referencedTableName="service_request"
+                                 baseColumnNames="service_claim_id"
+                                 referencedTableName="service_claim"
                                  referencedColumnNames="id"/>
 
-        <addForeignKeyConstraint constraintName="fk_service_request_response"
-                                 baseTableName="response"
-                                 baseColumnNames="service_request_id"
-                                 referencedTableName="service_request"
+        <addForeignKeyConstraint constraintName="fk_service_request_bid"
+                                 baseTableName="specialist_bid"
+                                 baseColumnNames="service_claim_id"
+                                 referencedTableName="service_claim"
                                  referencedColumnNames="id"/>
     </changeSet>
 </databaseChangeLog>

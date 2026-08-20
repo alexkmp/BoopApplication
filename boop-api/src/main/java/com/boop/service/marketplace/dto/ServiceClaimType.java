@@ -1,6 +1,6 @@
 package com.boop.service.marketplace.dto;
 
-public enum ServiceRequestType {
+public enum ServiceClaimType {
     PET_SITTING,
     VET,
     CONSULTATION

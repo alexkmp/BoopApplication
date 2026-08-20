@@ -1,6 +1,6 @@
 package com.boop.service.marketplace.dto;
 
-public enum ServiceRequestStatus {
+public enum ServiceClaimStatus {
     DRAFT,
     WAITING,
     IN_PROGRESS,

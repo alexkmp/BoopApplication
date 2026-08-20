@@ -1,7 +1,7 @@
 package com.boop.service.marketplace.persistence.entity;
 
-import com.boop.service.marketplace.dto.ServiceRequestStatus;
-import com.boop.service.marketplace.dto.ServiceRequestType;
+import com.boop.service.marketplace.dto.ServiceClaimStatus;
+import com.boop.service.marketplace.dto.ServiceClaimType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,32 +11,34 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "service_request")
+@Table(name = "service_claim")
 @Access(AccessType.FIELD)
 @Getter
 @Setter
 @RequiredArgsConstructor
 @NoArgsConstructor
-public class ServiceRequest extends BaseEntity {
+public class ServiceClaim extends BaseEntity {
 
     @NonNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "request_type")
-    ServiceRequestType serviceRequestType;
+    @Column(name = "claim_type")
+    ServiceClaimType serviceClaimType;
 
     @NonNull
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    ServiceRequestStatus serviceRequestStatus;
+    ServiceClaimStatus serviceClaimStatus;
 
     @Column(name = "pet_id")
     BigInteger petId;
 
+    @NonNull
     @Column(name = "start_date")
     @Temporal(TemporalType.TIMESTAMP)
     @Getter @Setter
     LocalDateTime startDate;
 
+    @NonNull
     @Column(name = "end_date")
     @Temporal(TemporalType.TIMESTAMP)
     @Getter @Setter
@@ -53,14 +55,14 @@ public class ServiceRequest extends BaseEntity {
     @OneToMany(
             cascade = CascadeType.DETACH,
             fetch = FetchType.LAZY,
-            targetEntity = SpecialistResponse.class,
-            mappedBy = "serviceRequest")
-    List<SpecialistResponse> responses;
+            targetEntity = SpecialistBid.class,
+            mappedBy = "serviceClaim")
+    List<SpecialistBid> specialistBids;
 
     @OneToMany(
             cascade = CascadeType.DETACH,
             fetch = FetchType.LAZY,
             targetEntity = ServiceReview.class,
-            mappedBy = "serviceRequest")
+            mappedBy = "serviceClaim")
     List<ServiceReview> serviceReviews;
 }

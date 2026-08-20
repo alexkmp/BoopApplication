@@ -7,7 +7,7 @@ import lombok.*;
 import java.math.BigInteger;
 
 @Entity
-@Table(name = "response")
+@Table(name = "service_review")
 @Access(AccessType.FIELD)
 @Getter
 @Setter
@@ -17,8 +17,8 @@ public class ServiceReview extends BaseEntity {
 
     @NonNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "service_request_id", nullable = false, insertable = false, updatable = false)
-    ServiceRequest serviceRequest;
+    @JoinColumn(name = "service_claim_id", nullable = false, insertable = false, updatable = false)
+    ServiceClaim serviceClaim;
 
     @Column(name = "reviewer_id")
     BigInteger reviewerId;

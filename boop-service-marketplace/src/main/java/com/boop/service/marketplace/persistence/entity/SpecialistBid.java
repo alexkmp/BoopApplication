@@ -6,18 +6,18 @@ import lombok.*;
 import java.math.BigInteger;
 
 @Entity
-@Table(name = "specialist_response")
+@Table(name = "specialist_bid")
 @Access(AccessType.FIELD)
 @Getter
 @Setter
 @RequiredArgsConstructor
 @NoArgsConstructor
-public class SpecialistResponse extends BaseEntity {
+public class SpecialistBid extends BaseEntity {
 
     @NonNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "service_request_id", nullable = false, insertable = false, updatable = false)
-    ServiceRequest serviceRequest;
+    @JoinColumn(name = "service_claim_id", nullable = false, insertable = false, updatable = false)
+    ServiceClaim serviceClaim;
 
     @Column(name = "specialist_id")
     BigInteger specialistId;
