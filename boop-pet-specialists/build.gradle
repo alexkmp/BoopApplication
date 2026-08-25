@@ -34,6 +34,7 @@ dependencyManagement {
 dependencies {
 	implementation project(':boop-api')
 	implementation project(':boop-core')
+	implementation project(':boop-security-oauth2')
 
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation "org.springdoc:springdoc-openapi-starter-webflux-ui:${openApiVersion}"

@@ -1,5 +1,6 @@
 package com.boop.service.marketplace.mapper;
 
+import com.boop.mapper.ResponseMapper;
 import com.boop.service.marketplace.dto.SpecialistBidResponse;
 import com.boop.service.marketplace.persistence.entity.SpecialistBid;
 import lombok.RequiredArgsConstructor;

@@ -5,7 +5,7 @@ plugins {
 
 group = 'com.boop.core'
 version = '0.0.1-SNAPSHOT'
-description = 'Core library for Boop Application'
+description = 'Security library for Boop Application'
 
 java {
 	toolchain {
@@ -25,19 +25,12 @@ repositories {
 }
 
 dependencies {
-	implementation project(':boop-api')
-
 	implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
-	implementation "org.springdoc:springdoc-openapi-starter-common:${openApiVersion}"
 
-	implementation "net.devh:grpc-client-spring-boot-starter:${grpcStarterVersion}"
-	implementation "net.devh:grpc-server-spring-boot-starter:${grpcStarterVersion}"
-
-	implementation 'io.micrometer:micrometer-core'
+	implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-resource-server'
+	implementation 'org.springframework.security:spring-security-oauth2-jose'
 
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.withType(JavaCompile) {
