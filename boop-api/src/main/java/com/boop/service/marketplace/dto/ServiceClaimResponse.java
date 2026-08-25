@@ -14,7 +14,7 @@ public record ServiceClaimResponse(
         LocalDateTime endDate,
         BigDecimal priceMin,
         BigDecimal priceMax,
-        List<SpecialistBidResponse> responses,
+        List<SpecialistBidResponse> specialistBids,
         List<ServiceReviewResponse> serviceReviews
         ) {
 }

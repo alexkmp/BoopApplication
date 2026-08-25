@@ -1,4 +1,4 @@
-server.port: 8082
+server.port: 8083
 
 spring:
   application:
@@ -52,9 +52,9 @@ jwt:
 
 logging:
   level:
-#    org.springframework.security: INFO
-#    org.springframework.web: INFO
-#    org.springframework.boot.autoconfigure: INFO
+    org.springframework.security: INFO
+    org.springframework.web: INFO
+    org.springframework.boot.autoconfigure: INFO
 
 
 springdoc:
@@ -66,12 +66,6 @@ springdoc:
   swagger-ui:
     enabled: true
     path: /service-marketplace/openapi/swagger-ui.html
-    oauth:
-      clientId: ${KEYCLOAK_OAUTH_CLIENT_ID}
-      clientSecret: ${KEYCLOAK_OAUTH_CLIENT_SECRET}
-  oAuthFlow:
-    authorizationUrl: http://${keycloak.host}:8080/realms/${keycloak.realm}/protocol/openid-connect/auth
-    tokenUrl: http://${keycloak.host}:8080/realms/${keycloak.realm}/protocol/openid-connect/token
 
 ---
 spring.config.activate.on-profile: docker

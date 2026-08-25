@@ -5,7 +5,6 @@ BEGIN
 CREATE ROLE boop_service_marketplace LOGIN PASSWORD '12345678';
 END IF;
 
-BEGIN
     IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'boop_pet_specialist') THEN
 CREATE ROLE boop_pet_specialist LOGIN PASSWORD '12345678';
 END IF;

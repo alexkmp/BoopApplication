@@ -123,25 +123,18 @@ spring:
               filters:
                 - TokenRelay
 
+            - id: pet-specialists-actuator
+              uri: http://boop-pet-specialists
+              predicates:
+                - Path=/specialists-actuator/**
+              filters:
+                - TokenRelay
+
             #service marketplace routes
-            - id: service-marketplace
+            - id: pet-service-marketplace-actuator
               uri: http://boop-service-marketplace
               predicates:
-                - Path=/api/service-marketplace/**
-              filters:
-                - TokenRelay
-
-            - id: service-marketplace-swagger-ui
-              uri: http://boop-service-marketplace
-              predicates:
-                - Path=/service-marketplace/openapi/**
-              filters:
-                - TokenRelay
-
-            - id: service-marketplace-swagger-ui-webjars
-              uri: http://boop-pet-service-marketplace
-              predicates:
-                - Path=/service-marketplace/webjars/**
+                - Path=/service-marketplace-actuator/**
               filters:
                 - TokenRelay
 

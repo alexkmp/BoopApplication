@@ -1,6 +1,5 @@
 package com.boop.service.marketplace.mapper;
 
-import com.boop.mapper.ResponseMapper;
 import com.boop.service.marketplace.dto.ServiceClaimResponse;
 import com.boop.service.marketplace.persistence.entity.ServiceClaim;
 import lombok.RequiredArgsConstructor;

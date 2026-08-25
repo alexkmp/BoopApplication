@@ -43,6 +43,7 @@ public class ServiceClaimService {
         ServiceClaim serviceClaim = new ServiceClaim(
                 serviceClaimRequest.serviceClaimType(),
                 ServiceClaimStatus.DRAFT,
+                serviceClaimRequest.petId(),
                 serviceClaimRequest.startDate(),
                 serviceClaimRequest.endDate(),
                 serviceClaimRequest.priceMin(),

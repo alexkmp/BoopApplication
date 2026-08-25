@@ -26,7 +26,6 @@ public interface ServiceClaimOperations {
         @ApiResponse(responseCode = "200", description = "${api.responseCodes.ok.description}"),
         @ApiResponse(responseCode = "404", description = "${api.responseCodes.notFound.description}")
     })
-    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping
     @ResponseBody
     Mono<List<ServiceClaimResponse>> getAll();
@@ -40,7 +39,6 @@ public interface ServiceClaimOperations {
             @ApiResponse(responseCode = "200", description = "${api.responseCodes.ok.description}"),
             @ApiResponse(responseCode = "404", description = "${api.responseCodes.notFound.description}")
     })
-    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("{id}")
     @ResponseBody
     Mono<ServiceClaimResponse> getById(@PathVariable Long id) throws BoopNotFoundException;
@@ -66,7 +64,6 @@ public interface ServiceClaimOperations {
             @ApiResponse(responseCode = "200", description = "${api.responseCodes.ok.description}"),
             @ApiResponse(responseCode = "404", description = "${api.responseCodes.notFound.description}")
     })
-    @SecurityRequirement(name = "Bearer Authentication")
     @PutMapping("{id}")
     @ResponseBody
     Mono<ServiceClaimResponse> update(@PathVariable Long id, @RequestBody ServiceClaimRequest serviceClaimRequest) throws BoopNotFoundException;
@@ -80,7 +77,6 @@ public interface ServiceClaimOperations {
             @ApiResponse(responseCode = "200", description = "${api.responseCodes.ok.description}"),
             @ApiResponse(responseCode = "404", description = "${api.responseCodes.notFound.description}")
     })
-    @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping("{id}")
     @ResponseBody
     Mono<Boolean> delete(@PathVariable Long id);

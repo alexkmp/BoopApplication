@@ -29,6 +29,7 @@ public class ServiceClaim extends BaseEntity {
     @Column(name = "status")
     ServiceClaimStatus serviceClaimStatus;
 
+    @NonNull
     @Column(name = "pet_id")
     BigInteger petId;
 
