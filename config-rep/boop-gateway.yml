@@ -191,8 +191,6 @@ springdoc:
         url: https://localhost:8443/owners/openapi/v3/api-docs
       - name: Pet Specialists
         url: https://localhost:8443/specialists/openapi/v3/api-docs
-      - name: Service Marketplace
-        url: https://localhost:8443/service-marketplace/openapi/v3/api-docs
 
 logging:
   level:
