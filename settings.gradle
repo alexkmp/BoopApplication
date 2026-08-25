@@ -1,2 +1,2 @@
 rootProject.name = 'boop-application'
-include 'boop-api', 'boop-core', 'boop-gateway', 'boop-pet-owners', 'boop-pet-specialists', 'boop-keycloak-admin'
+include 'boop-api', 'boop-core', 'boop-gateway', 'boop-keycloak-admin', 'boop-pet-owners', 'boop-pet-specialists', 'boop-service-marketplace'

@@ -37,6 +37,7 @@ public class SecurityConfig {
                                 "/api/admin/**",
                                 "/owners-actuator/**",
                                 "/specialists-actuator/**",
+                                "/service-marketplace-actuator/**",
                                 "/owners/openapi/**",
                                 "/specialists/openapi/**",
                                 "/owners/webjars/**",

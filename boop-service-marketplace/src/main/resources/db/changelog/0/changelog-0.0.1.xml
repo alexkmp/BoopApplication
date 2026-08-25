@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.11.xsd">
+
+    <changeSet id="1" author="alex">
+        <createTable tableName="service_claim">
+            <column name="id" type="bigserial" remarks="ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="version" type="bigint" remarks="Version">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date" type="timestamp" remarks="Creation date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modify_date" type="timestamp" remarks="Modify date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="claim_type" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(50)" remarks="Status">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pet_id" type="bigint" remarks="Pet id">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_date" type="timestamp" remarks="Start date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="timestamp" remarks="End date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price_min" type="decimal(7, 2)" remarks="Price min">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price_max" type="decimal(7, 2)" remarks="Price max">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="specialist_bid">
+            <column name="id" type="bigserial" remarks="ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="version" type="bigint" remarks="Version">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date" type="timestamp" remarks="Creation date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modify_date" type="timestamp" remarks="Modify date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="service_claim_id" type="bigint" remarks="Service request reference">
+                <constraints nullable="false"/>
+            </column>
+            <column name="specialist_id" type="bigint" remarks="Specialist id">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message" type="text" remarks="Message">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="service_review">
+            <column name="id" type="bigserial" remarks="ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="version" type="bigint" remarks="Version">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date" type="timestamp" remarks="Creation date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modify_date" type="timestamp" remarks="Modify date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="service_claim_id" type="bigint" remarks="Service request reference">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reviewer_id" type="bigint" remarks="Reviewer id">
+                <constraints nullable="false"/>
+            </column>
+            <column name="review_type" type="varchar(50)" remarks="Review type">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text" remarks="Description">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rating" type="int" remarks="Rating">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint constraintName="fk_service_request_review"
+                                 baseTableName="service_review"
+                                 baseColumnNames="service_claim_id"
+                                 referencedTableName="service_claim"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_service_request_bid"
+                                 baseTableName="specialist_bid"
+                                 baseColumnNames="service_claim_id"
+                                 referencedTableName="service_claim"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>
