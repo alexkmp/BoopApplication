@@ -44,3 +44,4 @@ kafka/
 keycloak/
 keystore/
 postgres/pg_volume
+redis/data
