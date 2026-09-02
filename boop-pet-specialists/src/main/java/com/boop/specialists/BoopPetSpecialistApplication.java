@@ -4,12 +4,14 @@ import io.micrometer.core.instrument.binder.grpc.ObservationGrpcClientIntercepto
 import io.micrometer.observation.ObservationRegistry;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import reactor.core.publisher.Hooks;
 
 @SpringBootApplication
 @ComponentScan("com.boop.*")
+@EnableCaching
 public class BoopPetSpecialistApplication {
 
     @Bean

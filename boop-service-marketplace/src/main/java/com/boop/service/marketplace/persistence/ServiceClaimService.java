@@ -10,6 +10,9 @@ import com.boop.service.marketplace.persistence.repository.ServiceClaimRepositor
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +34,7 @@ public class ServiceClaimService {
         return serviceClaimMapper.toResponses(serviceClaimRepository.findAll());
     }
 
+    @Cacheable(value = "service-claim", key = "#id")
     public ServiceClaimResponse getServiceClaimById(Long id) {
         log.info("get service claim by id: {}", id);
         Optional<ServiceClaim> serviceClaim = serviceClaimRepository.findById(id);
@@ -38,6 +42,7 @@ public class ServiceClaimService {
         return serviceClaimMapper.toResponse(serviceClaim.get());
     }
 
+    @CachePut(value = "service-claim", key = "#result.id()")
     public ServiceClaimResponse createServiceClaim(ServiceClaimRequest serviceClaimRequest) {
         log.info("create service claim, request: {}", serviceClaimRequest);
         ServiceClaim serviceClaim = new ServiceClaim(
@@ -52,6 +57,7 @@ public class ServiceClaimService {
         return serviceClaimMapper.toResponse(serviceClaimRepository.save(serviceClaim));
     }
 
+    @CachePut(value = "service-claim", key = "#result.id()")
     public ServiceClaimResponse update(Long id, ServiceClaimRequest serviceClaimRequest) {
         log.info("update service claim with id: {}, request: {}", id, serviceClaimRequest);
         Optional<ServiceClaim> serviceClaim = serviceClaimRepository.findById(id);
@@ -65,6 +71,7 @@ public class ServiceClaimService {
         return serviceClaimMapper.toResponse(serviceClaimRepository.save(serviceClaim.get()));
     }
 
+    @CacheEvict(value = "service-claim", key = "#id")
     public Boolean delete(Long id) {
         log.info("delete service claim with id: {}", id);
         serviceClaimRepository.deleteById(id);

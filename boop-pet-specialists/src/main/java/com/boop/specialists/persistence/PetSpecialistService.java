@@ -9,6 +9,9 @@ import com.boop.specialists.persistence.repository.PetSpecialistRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,13 +33,15 @@ public class PetSpecialistService {
         return petSpecialistMapper.toResponses(petSpecialistRepository.findAll());
     }
 
+    @Cacheable(value = "specialist", key = "#id")
     public PetSpecialistResponse getById(Long id) throws BoopNotFoundException {
         log.info("Get pet specialist by id: {}", id);
         Optional<PetSpecialist> specialist = petSpecialistRepository.findById(id);
-        if (!specialist.isPresent()) throw new BoopNotFoundException("Специалист с id:" + id + "не найден");
+        if (!specialist.isPresent()) throw new BoopNotFoundException("Specialist with id:" + id + "not found");
         return petSpecialistMapper.toResponse(specialist.get());
     }
 
+    @CachePut(value = "specialist", key = "#result.id()")
     public PetSpecialistResponse create(PetSpecialistRequest petSpecialistRequest) {
         log.info("Create pet specialist, request: {}", petSpecialistRequest);
         PetSpecialist specialist = new PetSpecialist(
@@ -50,19 +55,21 @@ public class PetSpecialistService {
         return petSpecialistMapper.toResponse(petSpecialistRepository.save(specialist));
     }
 
-    public PetSpecialistResponse update(Long id, PetSpecialistRequest petOwnerRequest) throws BoopNotFoundException {
-        log.info("Update pet specialist with id: {}, request: {}", id, petOwnerRequest);
+    @CachePut(value = "specialist", key = "#result.id()")
+    public PetSpecialistResponse update(Long id, PetSpecialistRequest petSpecialistRequest) throws BoopNotFoundException {
+        log.info("Update pet specialist with id: {}, request: {}", id, petSpecialistRequest);
         Optional<PetSpecialist> specialist = petSpecialistRepository.findById(id);
         specialist.ifPresentOrElse(s -> {
-            s.setEmail(petOwnerRequest.email());
-            s.setPhone(petOwnerRequest.phone());
-        },() -> new BoopNotFoundException("Владелец с id:" + id + "не найден"));
+            s.setEmail(petSpecialistRequest.email());
+            s.setPhone(petSpecialistRequest.phone());
+        },() -> new BoopNotFoundException("Specialist with id:" + id + "not found"));
 
         return petSpecialistMapper.toResponse(petSpecialistRepository.save(specialist.get()));
     }
 
+    @CacheEvict(value = "specialist", key = "#id")
     public Boolean delete(Long id) {
-        log.info("Delete pet owner with id: {}", id);
+        log.info("Delete pet specialist with id: {}", id);
         petSpecialistRepository.deleteById(id);
         return true;
     }

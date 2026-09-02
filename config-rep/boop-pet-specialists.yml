@@ -13,6 +13,11 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: false
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: ${REDIS_PASSWORD}
   liquibase:
     enabled: true
     change-log: classpath:/db/changelog/changelog-master.xml
@@ -80,6 +85,7 @@ springdoc:
 
 ---
 spring.config.activate.on-profile: docker
+spring.data.redis.host: redis
 server.port: 80
 db.host: postgres
 #db.host: postgres.hands-on.svc.cluster.local
