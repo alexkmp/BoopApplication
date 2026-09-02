@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.boop.cloud'
 version = '0.0.1-SNAPSHOT'
-description = 'Gateway for Boop Application'
+description = 'Owner Gateway for Boop Application'
 
 java {
 	toolchain {

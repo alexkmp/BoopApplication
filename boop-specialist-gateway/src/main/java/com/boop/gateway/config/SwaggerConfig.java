@@ -1,4 +1,4 @@
-package com.boop.specialists.config;
+package com.boop.gateway.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -19,7 +19,7 @@ public class SwaggerConfig {
                 .servers(List.of(userServer))
                 .info(
                         new Info()
-                                .title("Specialist service")
+                                .title("API Gateway service")
                                 .version("1.0")
                                 .description("BoopApplication")
                 );

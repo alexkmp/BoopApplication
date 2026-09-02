@@ -8,7 +8,7 @@ server:
 
 spring:
   application:
-    name: boop-gateway
+    name: boop-specialist-gateway
   security:
     oauth2:
       client:
@@ -22,22 +22,6 @@ spring:
             client-secret: ${KEYCLOAK_OAUTH_CLIENT_SECRET}
             authorization-grant-type: authorization_code
             scope: openid,email,profile,roles
-#        registration:
-#          google:
-#            # Google
-#            client-id: [google_client_id]
-#            client-secret: [google_client_secret]
-#            redirect-uri: https://localhost:8443/login/oauth2/code/google
-#            scope:
-#              - openid
-#              - email
-#              - profile
-#        provider:
-#          google:
-#            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
-#            token-uri: https://oauth2.googleapis.com/token
-#            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
-#            user-name-attribute: sub
   cloud:
     gateway:
       globalcors:
@@ -73,34 +57,6 @@ spring:
                       - 404
                       #- 401
 
-            - id: pet-owners
-              uri: http://boop-pet-owners
-              predicates:
-                - Path=/api/pet-owners/**
-              filters:
-                - TokenRelay
-
-            - id: pet-owners-swagger-ui
-              uri: http://boop-pet-owners
-              predicates:
-                - Path=/owners/openapi/**
-              filters:
-                - TokenRelay
-
-            - id: pet-owners-swagger-ui-webjars
-              uri: http://boop-pet-owners
-              predicates:
-                - Path=/owners/webjars/**
-              filters:
-                - TokenRelay
-
-            - id: pet-owners-actuator
-              uri: http://boop-pet-owners
-              predicates:
-                - Path=/owners-actuator/**
-              filters:
-                - TokenRelay
-
             #pet-specialist routes
             - id: pet-specialists
               uri: http://boop-pet-specialists
@@ -127,14 +83,6 @@ spring:
               uri: http://boop-pet-specialists
               predicates:
                 - Path=/specialists-actuator/**
-              filters:
-                - TokenRelay
-
-            #service marketplace routes
-            - id: pet-service-marketplace-actuator
-              uri: http://boop-service-marketplace
-              predicates:
-                - Path=/service-marketplace-actuator/**
               filters:
                 - TokenRelay
 
@@ -187,10 +135,8 @@ springdoc:
     urls:
       - url: /openapi/v3/api-docs
         name: API Gateway Service
-      - name: Pet Owners
-        url: https://localhost:8443/owners/openapi/v3/api-docs
       - name: Pet Specialists
-        url: https://localhost:8443/specialists/openapi/v3/api-docs
+        url: https://localhost:8444/specialists/openapi/v3/api-docs
 
 logging:
   level:
