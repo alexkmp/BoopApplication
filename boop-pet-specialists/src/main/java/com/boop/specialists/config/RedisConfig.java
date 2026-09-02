@@ -1,9 +1,10 @@
-package com.boop.service.marketplace.config;
+package com.boop.specialists.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CachingConfigurer;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,12 +18,11 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.Map;
 
 @Configuration
 @RequiredArgsConstructor
-public class RedisConfig extends CachingConfigurerSupport {
+public class RedisConfig implements CachingConfigurer {
 
     private final RedisConnectionFactory redisConnectionFactory;
 
@@ -50,7 +50,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         RedisCacheConfiguration fiveMinuteTtlExpirationDefaults = defaults.entryTtl(Duration.ofMinutes(5));
 
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(redisTemplate.getConnectionFactory());
-        Map<String, RedisCacheConfiguration> initialCaches = Map.of("service-claim", defaults.entryTtl(Duration.ofSeconds(10)));
+        Map<String, RedisCacheConfiguration> initialCaches = Map.of("specialist", defaults.entryTtl(Duration.ofSeconds(10)));
 
         return RedisCacheManager.builder(redisConnectionFactory)
                 .cacheWriter(redisCacheWriter)

@@ -1,4 +1,4 @@
-package com.boop.service.marketplace.config;
+package com.boop.owners.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -17,7 +17,6 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.Map;
 
 @Configuration
@@ -50,7 +49,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         RedisCacheConfiguration fiveMinuteTtlExpirationDefaults = defaults.entryTtl(Duration.ofMinutes(5));
 
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(redisTemplate.getConnectionFactory());
-        Map<String, RedisCacheConfiguration> initialCaches = Map.of("service-claim", defaults.entryTtl(Duration.ofSeconds(10)));
+        Map<String, RedisCacheConfiguration> initialCaches = Map.of("owner", defaults.entryTtl(Duration.ofSeconds(10)));
 
         return RedisCacheManager.builder(redisConnectionFactory)
                 .cacheWriter(redisCacheWriter)

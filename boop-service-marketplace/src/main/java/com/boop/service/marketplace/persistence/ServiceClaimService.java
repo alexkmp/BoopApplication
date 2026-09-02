@@ -34,7 +34,7 @@ public class ServiceClaimService {
         return serviceClaimMapper.toResponses(serviceClaimRepository.findAll());
     }
 
-    @Cacheable(value = "service-claims", key = "#id")
+    @Cacheable(value = "service-claim", key = "#id")
     public ServiceClaimResponse getServiceClaimById(Long id) {
         log.info("get service claim by id: {}", id);
         Optional<ServiceClaim> serviceClaim = serviceClaimRepository.findById(id);
@@ -42,7 +42,7 @@ public class ServiceClaimService {
         return serviceClaimMapper.toResponse(serviceClaim.get());
     }
 
-    @CachePut(value = "service-claims", key = "#result.id()")
+    @CachePut(value = "service-claim", key = "#result.id()")
     public ServiceClaimResponse createServiceClaim(ServiceClaimRequest serviceClaimRequest) {
         log.info("create service claim, request: {}", serviceClaimRequest);
         ServiceClaim serviceClaim = new ServiceClaim(
@@ -57,7 +57,7 @@ public class ServiceClaimService {
         return serviceClaimMapper.toResponse(serviceClaimRepository.save(serviceClaim));
     }
 
-    @CachePut(value = "service-claims", key = "#result.id()")
+    @CachePut(value = "service-claim", key = "#result.id()")
     public ServiceClaimResponse update(Long id, ServiceClaimRequest serviceClaimRequest) {
         log.info("update service claim with id: {}, request: {}", id, serviceClaimRequest);
         Optional<ServiceClaim> serviceClaim = serviceClaimRepository.findById(id);
@@ -71,7 +71,7 @@ public class ServiceClaimService {
         return serviceClaimMapper.toResponse(serviceClaimRepository.save(serviceClaim.get()));
     }
 
-    @CacheEvict(value = "service-claims", key = "#id")
+    @CacheEvict(value = "service-claim", key = "#id")
     public Boolean delete(Long id) {
         log.info("delete service claim with id: {}", id);
         serviceClaimRepository.deleteById(id);
