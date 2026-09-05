@@ -1,20 +1,20 @@
 package com.boop.owners.mapper;
 
 import com.boop.mapper.ResponseMapper;
-import com.boop.owners.dto.PetOwnerResponse;
+import com.boop.owners.dto.PetOwnerDataFullResponse;
 import com.boop.owners.persistence.entity.PetOwner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class PetOwnerMapper implements ResponseMapper<PetOwnerResponse, PetOwner> {
+public class PetOwnerMapper implements ResponseMapper<PetOwnerDataFullResponse, PetOwner> {
 
     private final PetMapper petMapper;
     private final NoteMapper noteMapper;
 
-    public PetOwnerResponse toResponse(PetOwner petOwner)  {
-        return new PetOwnerResponse(
+    public PetOwnerDataFullResponse toResponse(PetOwner petOwner)  {
+        return new PetOwnerDataFullResponse(
                 petOwner.getId(),
                 petOwner.getLogin(),
                 petOwner.getPhone(),

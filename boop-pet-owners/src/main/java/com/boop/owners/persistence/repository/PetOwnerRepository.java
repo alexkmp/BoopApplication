@@ -10,7 +10,5 @@ public interface PetOwnerRepository extends CrudRepository<PetOwner, Long> {
 
     List<PetOwner> findAll();
 
-    Optional<PetOwner> findPetOwnersByPhone(String phone);
-
-    Optional<PetOwner> findPetOwnerByEmail(String email);
+    Optional<PetOwner> findPetOwnerByLogin(String login);
 }

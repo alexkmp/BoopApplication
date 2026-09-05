@@ -201,6 +201,26 @@ services:
     depends_on:
       - elasticsearch
 
+  bff-owner:
+    build: boop-bff-owner
+    image: owner-domain/boop-bff-owner
+    container_name: boop-bff-owner
+    mem_limit: 512m
+    environment:
+      - LOGGING_CONFIG=/config-rep/logback.xml
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CONFIG_LOCATION=file:/config-rep/application.yml,file:/config-rep/boop-bff-owner.yml
+      - KEYCLOAK_OAUTH_CLIENT_ID=${KEYCLOAK_OAUTH_CLIENT_ID}
+      - KEYCLOAK_OAUTH_CLIENT_SECRET=${KEYCLOAK_OAUTH_CLIENT_SECRET}
+    ports:
+      - "8088:80"
+    volumes:
+      - $PWD/config-rep:/config-rep
+    depends_on:
+      - keycloak
+      - owner
+      - owner-gateway
+
   owner:
     build: boop-pet-owners
     image: owner-domain/boop-pet-owners

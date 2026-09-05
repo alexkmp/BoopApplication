@@ -57,31 +57,31 @@ spring:
                       - 404
                       #- 401
 
-            - id: pet-owners
-              uri: http://boop-pet-owners
+            - id: bff-owner
+              uri: http://boop-bff-owner
               predicates:
-                - Path=/api/pet-owners/**
+                - Path=/api/bff/pet-owners/**
               filters:
                 - TokenRelay
 
-            - id: pet-owners-swagger-ui
-              uri: http://boop-pet-owners
+            - id: bff-owner-swagger-ui
+              uri: http://boop-bff-owner
               predicates:
-                - Path=/owners/openapi/**
+                - Path=/bff-owner/openapi/**
               filters:
                 - TokenRelay
 
-            - id: pet-owners-swagger-ui-webjars
-              uri: http://boop-pet-owners
+            - id: bff-owner-swagger-ui-webjars
+              uri: http://boop-bff-owner
               predicates:
-                - Path=/owners/webjars/**
+                - Path=/bff-owner/webjars/**
               filters:
                 - TokenRelay
 
-            - id: pet-owners-actuator
-              uri: http://boop-pet-owners
+            - id: bff-owner-actuator
+              uri: http://boop-bff-owner
               predicates:
-                - Path=/owners-actuator/**
+                - Path=/bff-owner-actuator/**
               filters:
                 - TokenRelay
 
@@ -134,8 +134,8 @@ springdoc:
     urls:
       - url: /openapi/v3/api-docs
         name: API Gateway Service
-      - name: Pet Owners
-        url: https://localhost:8443/owners/openapi/v3/api-docs
+      - name: BFF Pet Owners
+        url: https://localhost:8443/bff-owner/openapi/v3/api-docs
 
 logging:
   level:
