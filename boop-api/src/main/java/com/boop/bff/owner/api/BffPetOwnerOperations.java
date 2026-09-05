@@ -1,5 +1,6 @@
-package com.boop.owners.api;
+package com.boop.bff.owner.api;
 
+import com.boop.bff.owner.dto.PetOwnerInfoResponse;
 import com.boop.exception.BoopNotFoundException;
 import com.boop.owners.dto.PetOwnerRequest;
 import com.boop.owners.dto.PetOwnerDataFullResponse;
@@ -11,53 +12,25 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
+import java.security.Principal;
 
-@Tag(name = "Pet Owners", description = "Managing pet owners API")
-@RequestMapping("/api/pet-owners")
-public interface PetOwnerOperations {
-
-    @Operation(
-            summary = "Get all pet owners",
-            description = "Get all saved pet owners info",
-            tags = {"pet owners", "getAll"}
-            )
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "${api.responseCodes.ok.description}"),
-        @ApiResponse(responseCode = "404", description = "${api.responseCodes.notFound.description}")
-    })
-    @SecurityRequirement(name = "Bearer Authentication")
-    @GetMapping
-    @ResponseBody
-    Mono<List<PetOwnerDataFullResponse>> getAll();
+@Tag(name = "Backend for frontend (pet Owners)", description = "Pet owner operations API")
+@RequestMapping("/api/bff/pet-owners")
+public interface BffPetOwnerOperations {
 
     @Operation(
-            summary = "Get pet owner by id",
-            description = "Get pet owner info by pet owner's id",
-            tags = {"pet owner", "get by id"}
+            summary = "Get current logged pet owner info",
+            description = "Get current logged pet owner info",
+            tags = {"pet owner", "logged"}
             )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "${api.responseCodes.ok.description}"),
             @ApiResponse(responseCode = "404", description = "${api.responseCodes.notFound.description}")
     })
     @SecurityRequirement(name = "Bearer Authentication")
-    @GetMapping("{id}")
+    @GetMapping()
     @ResponseBody
-    Mono<PetOwnerDataFullResponse> getById(@PathVariable Long id) throws BoopNotFoundException;
-
-    @Operation(
-            summary = "Find pet owner by login",
-            description = "Find pet owner by login",
-            tags = {"pet owner", "find", "by login"}
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "${api.responseCodes.ok.description}"),
-            @ApiResponse(responseCode = "404", description = "${api.responseCodes.notFound.description}")
-    })
-    @SecurityRequirement(name = "Bearer Authentication")
-    @GetMapping("/find")
-    @ResponseBody
-    Mono<PetOwnerDataFullResponse> findByLogin(@RequestParam("login") String login);
+    Mono<PetOwnerInfoResponse> getLoggedOwnerInfo(Principal principal) throws BoopNotFoundException;
 
     @Operation(
             summary = "Create pet owner",

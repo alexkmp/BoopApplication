@@ -56,6 +56,13 @@ public class KeycloakApiService {
         return mapToUserDto(userInfoById);
     }
 
+    public KeycloakUserInfo getUserInfoByUsername(String username, Boolean exact) {
+        log.info("Get user by username: {}, exact: {}", username, exact);
+        GetUserByUsernameRequest request = GetUserByUsernameRequest.newBuilder().setUsername(username).setExact(exact).build();
+        GetUserReply userInfoById = keycloakAdminBlockingStub.getUserInfoByUsername(request);
+        return mapToUserDto(userInfoById);
+    }
+
     public String createUser(CreateUserRequest createUserRequest) {
         log.info("Create user in keycloak, request: {}", createUserRequest);
         com.boop.grpc.MessageTypes.CreateUserRequest request = com.boop.grpc.MessageTypes.CreateUserRequest.newBuilder()

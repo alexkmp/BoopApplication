@@ -6,6 +6,11 @@ message GetUserByIdRequest {
   string uuid = 1;
 }
 
+message GetUserByUsernameRequest {
+  string username = 1;
+  bool exact = 2;
+}
+
 message GetUserReply {
   string uuid = 1;
   string login = 2;

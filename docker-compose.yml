@@ -201,7 +201,27 @@ services:
     depends_on:
       - elasticsearch
 
-  owners:
+  bff-owner:
+    build: boop-bff-owner
+    image: owner-domain/boop-bff-owner
+    container_name: boop-bff-owner
+    mem_limit: 512m
+    environment:
+      - LOGGING_CONFIG=/config-rep/logback.xml
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CONFIG_LOCATION=file:/config-rep/application.yml,file:/config-rep/boop-bff-owner.yml
+      - KEYCLOAK_OAUTH_CLIENT_ID=${KEYCLOAK_OAUTH_CLIENT_ID}
+      - KEYCLOAK_OAUTH_CLIENT_SECRET=${KEYCLOAK_OAUTH_CLIENT_SECRET}
+    ports:
+      - "8088:80"
+    volumes:
+      - $PWD/config-rep:/config-rep
+    depends_on:
+      - keycloak
+      - owner
+      - owner-gateway
+
+  owner:
     build: boop-pet-owners
     image: owner-domain/boop-pet-owners
     container_name: boop-pet-owners
@@ -222,7 +242,7 @@ services:
       - keycloak
       - postgres
 
-  specialists:
+  specialist:
     build: boop-pet-specialists
     image: specialist-domain/boop-pet-specialists
     container_name: boop-pet-specialists
@@ -261,10 +281,10 @@ services:
     depends_on:
       - postgres
 
-  gateway:
-    build: boop-gateway
-    image: boop-gateway
-    container_name: boop-gateway
+  owner-gateway:
+    build: boop-owner-gateway
+    image: gateway/boop-owner-gateway
+    container_name: boop-owner-gateway
     mem_limit: 512m
     ports:
       - "8443:8443"
@@ -272,7 +292,30 @@ services:
       - LOGGING_CONFIG=/config-rep/logback.xml
       - SPRING_PROFILES_ACTIVE=docker
       - SERVER_SSL_KEY_STORE=file:/keystore/boop-cert.p12
-      - SPRING_CONFIG_LOCATION=file:/config-rep/application.yml,file:/config-rep/boop-gateway.yml
+      - SPRING_CONFIG_LOCATION=file:/config-rep/application.yml,file:/config-rep/boop-owner-gateway.yml
+      - SERVER_SSL_KEY_STORE_PASSWORD=${SSL_KEY_STORE_PASSWORD}
+      - CONFIG_SERVER_USR=${CONFIG_SERVER_USR}
+      - CONFIG_SERVER_PWD=${CONFIG_SERVER_PWD}
+      - KEYCLOAK_OAUTH_CLIENT_ID=${KEYCLOAK_OAUTH_CLIENT_ID}
+      - KEYCLOAK_OAUTH_CLIENT_SECRET=${KEYCLOAK_OAUTH_CLIENT_SECRET}
+    volumes:
+      - $PWD/keystore:/keystore
+      - $PWD/config-rep:/config-rep
+    depends_on:
+      - keycloak
+
+  specialist-gateway:
+    build: boop-specialist-gateway
+    image: boop-specialist-gateway
+    container_name: boop-specialist-gateway
+    mem_limit: 512m
+    ports:
+      - "8444:8443"
+    environment:
+      - LOGGING_CONFIG=/config-rep/logback.xml
+      - SPRING_PROFILES_ACTIVE=docker
+      - SERVER_SSL_KEY_STORE=file:/keystore/boop-cert.p12
+      - SPRING_CONFIG_LOCATION=file:/config-rep/application.yml,file:/config-rep/boop-specialist-gateway.yml
       - SERVER_SSL_KEY_STORE_PASSWORD=${SSL_KEY_STORE_PASSWORD}
       - CONFIG_SERVER_USR=${CONFIG_SERVER_USR}
       - CONFIG_SERVER_PWD=${CONFIG_SERVER_PWD}

@@ -1,0 +1,147 @@
+server:
+  port: ${PORT:8443}
+  ssl:
+    key-store-type: PKCS12
+    key-store: classpath:keystore/boop-cert.p12
+    key-store-password: ${SSL_KEY_STORE_PASSWORD}
+    key-alias: localhost
+
+spring:
+  application:
+    name: boop-owner-gateway
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://${keycloak.host}:8080/realms/${keycloak.realm}
+        registration:
+          keycloak:
+            provider: keycloak
+            client-id: ${KEYCLOAK_OAUTH_CLIENT_ID}
+            client-secret: ${KEYCLOAK_OAUTH_CLIENT_SECRET}
+            authorization-grant-type: authorization_code
+            scope: openid,email,profile,roles
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - PATCH
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            exposedHeaders: "*"
+      server:
+        webflux:
+          routes:
+            # pet-owner routes
+            - id: admin
+              uri: http://boop-pet-owners
+              predicates:
+                - Path=/api/admin/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+#                    id: keycloakApiCircuitBreaker
+                    name: KeycloakApiCircuitBreaker
+                    fallbackUri: forward:/fallback
+                    statusCodes:
+                      - 500
+                      - 503
+                      - 404
+                      #- 401
+
+            - id: bff-owner
+              uri: http://boop-bff-owner
+              predicates:
+                - Path=/api/bff/pet-owners/**
+              filters:
+                - TokenRelay
+
+            - id: bff-owner-swagger-ui
+              uri: http://boop-bff-owner
+              predicates:
+                - Path=/bff-owner/openapi/**
+              filters:
+                - TokenRelay
+
+            - id: bff-owner-swagger-ui-webjars
+              uri: http://boop-bff-owner
+              predicates:
+                - Path=/bff-owner/webjars/**
+              filters:
+                - TokenRelay
+
+            - id: bff-owner-actuator
+              uri: http://boop-bff-owner
+              predicates:
+                - Path=/bff-owner-actuator/**
+              filters:
+                - TokenRelay
+
+            - id: keycloak-jwt-token
+              uri: http://keycloak
+              predicates:
+                - Path=/realms/boop-app-realm/protocol/openid-connect/token
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      keycloakApiCircuitBreaker:
+        registerHealthIndicator: true
+        slidingWindowSize: 5
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 3s
+        permittedNumberOfCallsInHalfOpenState: 3
+        eventConsumerBufferSize: 10
+  retry:
+    configs:
+      default:
+        max-attempts: 3
+        wait-duration: 10s
+    metrics:
+      legacy:
+        enabled: true
+    enabled: true
+
+management:
+  endpoint:
+    health:
+      show-details: "ALWAYS"
+    gateway:
+      access: read_only
+
+keycloak:
+  auth-server-url: http://${keycloak.host}:8080
+  client-id: ${KEYCLOAK_OAUTH_CLIENT_ID}
+  client-secret: ${KEYCLOAK_OAUTH_CLIENT_SECRET}
+
+springdoc:
+  cache:
+    disabled: true
+  api-docs:
+    path: /openapi/v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /openapi/swagger-ui.html
+    urls:
+      - url: /openapi/v3/api-docs
+        name: API Gateway Service
+      - name: BFF Pet Owners
+        url: https://localhost:8443/bff-owner/openapi/v3/api-docs
+
+logging:
+  level:
+#    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: DEBUG
+#    org.springframework.cloud.gateway: DEBUG
+#    org.springframework.web.server.adapter.HttpWebHandlerAdapter: DEBUG
+#    org.springframework.security: TRACE
+#    org.springframework.web: TRACE
+#    org.springframework.boot.autoconfigure: TRACE

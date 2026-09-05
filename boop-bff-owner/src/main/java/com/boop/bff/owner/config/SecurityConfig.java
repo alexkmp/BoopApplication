@@ -1,4 +1,4 @@
-package com.boop.owners.config;
+package com.boop.bff.owner.config;
 
 import com.boop.converter.JwtConverter;
 import org.springframework.context.annotation.Bean;
@@ -26,13 +26,12 @@ public class SecurityConfig {
                 .authorizeExchange (exchanges ->
                 exchanges.pathMatchers(
                                 "/headerrouting/**",
-                                "/owners-actuator/**",
+                                "/bff-owner-actuator/**",
                                 "/error/**",
-                                "/owners/openapi/**",
-                                "/owners/webjars/**",
-                                "/api/admin/**").permitAll()
-                        .pathMatchers(HttpMethod.POST, "/api/pet-owners").permitAll()
-                        .pathMatchers(HttpMethod.GET, "/api/pet-owners/find").permitAll()
+                                "/bff-owner/openapi/**",
+                                "/bff-owner/webjars/**").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/bff/pet-owners/find").permitAll()
+                        .pathMatchers(HttpMethod.POST, "/api/bff/pet-owners").permitAll()
                         .anyExchange().authenticated()
                 )
             .oauth2ResourceServer (oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtConverter)))
