@@ -4,7 +4,6 @@ import io.micrometer.core.instrument.binder.grpc.ObservationGrpcClientIntercepto
 import io.micrometer.observation.ObservationRegistry;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -20,8 +19,10 @@ public class BoopBffOwnerApplication {
     }
 
     @Bean
-    public WebClient.Builder loadBalancedWebClientBuilder() {
-        return WebClient.builder();
+    public WebClient webClient(ObservationRegistry observationRegistry) {
+        return WebClient.builder().baseUrl("http://boop-pet-owners")
+                .observationRegistry(observationRegistry)
+                .build();
     }
 
     public static void main(String[] args)

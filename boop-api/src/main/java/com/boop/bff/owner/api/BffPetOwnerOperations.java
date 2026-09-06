@@ -2,17 +2,16 @@ package com.boop.bff.owner.api;
 
 import com.boop.bff.owner.dto.PetOwnerInfoResponse;
 import com.boop.exception.BoopNotFoundException;
-import com.boop.owners.dto.PetOwnerRequest;
 import com.boop.owners.dto.PetOwnerDataFullResponse;
+import com.boop.owners.dto.PetOwnerRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
-
-import java.security.Principal;
 
 @Tag(name = "Backend for frontend (pet Owners)", description = "Pet owner operations API")
 @RequestMapping("/api/bff/pet-owners")
@@ -28,9 +27,9 @@ public interface BffPetOwnerOperations {
             @ApiResponse(responseCode = "404", description = "${api.responseCodes.notFound.description}")
     })
     @SecurityRequirement(name = "Bearer Authentication")
-    @GetMapping()
+    @GetMapping("")
     @ResponseBody
-    Mono<PetOwnerInfoResponse> getLoggedOwnerInfo(Principal principal) throws BoopNotFoundException;
+    Mono<PetOwnerInfoResponse> getLoggedOwnerInfo(Authentication auth) throws BoopNotFoundException;
 
     @Operation(
             summary = "Create pet owner",
@@ -56,7 +55,7 @@ public interface BffPetOwnerOperations {
     @SecurityRequirement(name = "Bearer Authentication")
     @PutMapping("{id}")
     @ResponseBody
-    Mono<PetOwnerDataFullResponse> update(@PathVariable Long id, @RequestBody PetOwnerRequest petOwnerRequest) throws BoopNotFoundException;
+    Mono<PetOwnerDataFullResponse> update(@PathVariable Long id, @RequestBody PetOwnerRequest petOwnerRequest, Authentication auth) throws BoopNotFoundException;
 
     @Operation(
             summary = "Delete pet owner",
@@ -70,5 +69,5 @@ public interface BffPetOwnerOperations {
     @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping("{id}")
     @ResponseBody
-    Mono<Boolean> delete(@PathVariable Long id);
+    Mono<Boolean> delete(@PathVariable Long id, Authentication auth);
 }

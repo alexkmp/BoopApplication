@@ -7,11 +7,12 @@ import com.boop.exception.BoopNotFoundException;
 import com.boop.owners.dto.PetOwnerDataFullResponse;
 import com.boop.owners.dto.PetOwnerRequest;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
-
-import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,10 +20,12 @@ public class BffPetOwnerOperationController implements BffPetOwnerOperations {
 
     private final PetOwnerService petOwnerService;
 
+    private Logger log = LoggerFactory.getLogger(BffPetOwnerOperationController.class);
+
     @Override
     @PreAuthorize("hasAnyRole('OWNER')")
-    public Mono<PetOwnerInfoResponse> getLoggedOwnerInfo(Principal principal) throws BoopNotFoundException {
-        return petOwnerService.getPetOwner(principal.getName());
+    public Mono<PetOwnerInfoResponse> getLoggedOwnerInfo(Authentication auth) throws BoopNotFoundException {
+        return petOwnerService.getLoggedOwnerInfo(auth);
     }
 
     @Override
@@ -33,13 +36,13 @@ public class BffPetOwnerOperationController implements BffPetOwnerOperations {
 
     @Override
     @PreAuthorize("hasAnyRole('OWNER')")
-    public Mono<PetOwnerDataFullResponse> update(Long id, PetOwnerRequest petOwnerRequest) throws BoopNotFoundException {
+    public Mono<PetOwnerDataFullResponse> update(Long id, PetOwnerRequest petOwnerRequest, Authentication auth) throws BoopNotFoundException {
         return null;
     }
 
     @Override
     @PreAuthorize("hasAnyRole('OWNER')")
-    public Mono<Boolean> delete(Long id) {
+    public Mono<Boolean> delete(Long id, Authentication auth) {
         return null;
     }
 }

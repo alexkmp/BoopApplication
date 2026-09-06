@@ -1,6 +1,6 @@
 package com.boop.owners.config;
 
-import com.boop.converter.JwtConverter;
+import com.boop.jwt.converter.JwtConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -32,7 +32,7 @@ public class SecurityConfig {
                                 "/owners/webjars/**",
                                 "/api/admin/**").permitAll()
                         .pathMatchers(HttpMethod.POST, "/api/pet-owners").permitAll()
-                        .pathMatchers(HttpMethod.GET, "/api/pet-owners/find").permitAll()
+//                        .pathMatchers(HttpMethod.GET, "/api/pet-owners/find").permitAll()
                         .anyExchange().authenticated()
                 )
             .oauth2ResourceServer (oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtConverter)))

@@ -5,7 +5,7 @@ import com.boop.exception.BoopException;
 import com.boop.exception.BoopNotFoundException;
 import com.boop.keycloak.KeycloakApiService;
 import com.boop.owners.dto.PetOwnerDataFullResponse;
-import io.micrometer.observation.ObservationRegistry;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 import static java.util.logging.Level.FINE;
 
 @Component
+@RequiredArgsConstructor
 public class PetOwnerServiceIntegration {
 
     private final WebClient ownerClient;
@@ -24,20 +25,15 @@ public class PetOwnerServiceIntegration {
 
     private Logger log = LoggerFactory.getLogger(PetOwnerServiceIntegration.class);
 
-    public PetOwnerServiceIntegration(WebClient.Builder webClientBuilder, KeycloakApiService keycloakApiService, ObservationRegistry observationRegistry) {
-        this.ownerClient = webClientBuilder.baseUrl("http://boop-pet-owners")
-                .observationRegistry(observationRegistry)
-                .build();
-        this.keycloakApiService = keycloakApiService;
-    }
-
-    public Mono<PetOwnerDataFullResponse> getPetOwner(String login) {
+    public Mono<PetOwnerDataFullResponse> getPetOwner(String login, String token) {
         return ownerClient.get().uri(
                         uriBuilder -> uriBuilder
                                 .path("/api/pet-owners/find")
                                 .queryParam("login", login)
                                 .build()
-                ).retrieve().bodyToMono(PetOwnerDataFullResponse.class)
+                )
+                .headers((header) -> header.setBearerAuth(token))
+                .retrieve().bodyToMono(PetOwnerDataFullResponse.class)
                 .log(log.getName(), FINE)
                 .onErrorMap(WebClientResponseException.class, ex -> handleException(ex));
     }

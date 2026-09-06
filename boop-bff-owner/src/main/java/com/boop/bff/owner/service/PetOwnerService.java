@@ -4,10 +4,12 @@ import com.boop.admin.dto.KeycloakUserInfo;
 import com.boop.admin.dto.KeycloakUserRole;
 import com.boop.bff.owner.dto.PetOwnerInfoResponse;
 import com.boop.bff.owner.integration.PetOwnerServiceIntegration;
+import com.boop.jwt.JwtUtils;
 import com.boop.owners.dto.PetOwnerDataFullResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -22,14 +24,18 @@ public class PetOwnerService {
     private Logger log = LoggerFactory.getLogger(PetOwnerService.class);
 
     private final PetOwnerServiceIntegration petOwnerServiceIntegration;
+    private final JwtUtils jwtUtils;
 
-    public Mono<PetOwnerInfoResponse> getPetOwner(String login) {
+    public Mono<PetOwnerInfoResponse> getLoggedOwnerInfo(Authentication auth) {
+        String login = jwtUtils.getPrincipalNameFromAuth(auth);
+        String token = jwtUtils.getToken(auth);
         return Mono.zip(
-                values -> createPetOwnerInfoResponse((PetOwnerDataFullResponse) values[0], (KeycloakUserInfo) values[1]),
-                        petOwnerServiceIntegration.getPetOwner(login),
+                values -> createPetOwnerInfoResponse(
+                        (PetOwnerDataFullResponse) values[0], (KeycloakUserInfo) values[1]),
+                        petOwnerServiceIntegration.getPetOwner(login, token),
                         petOwnerServiceIntegration.getPetOwnerKeycloakData(login)
-        ).doOnError(ex -> log.warn("getPetOwner failed: {}", ex.toString()))
-        .log(log.getName(), FINE);
+                ).doOnError(ex -> log.warn("getPetOwner failed: {}", ex.toString()))
+                .log(log.getName(), FINE);
     }
 
     private PetOwnerInfoResponse createPetOwnerInfoResponse(PetOwnerDataFullResponse ownerDataResponse, KeycloakUserInfo ownerKeycloakData) {

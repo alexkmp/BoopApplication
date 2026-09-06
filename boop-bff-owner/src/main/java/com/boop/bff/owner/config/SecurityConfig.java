@@ -1,6 +1,6 @@
 package com.boop.bff.owner.config;
 
-import com.boop.converter.JwtConverter;
+import com.boop.jwt.converter.JwtConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -30,7 +30,6 @@ public class SecurityConfig {
                                 "/error/**",
                                 "/bff-owner/openapi/**",
                                 "/bff-owner/webjars/**").permitAll()
-                        .pathMatchers(HttpMethod.GET, "/api/bff/pet-owners/find").permitAll()
                         .pathMatchers(HttpMethod.POST, "/api/bff/pet-owners").permitAll()
                         .anyExchange().authenticated()
                 )
