@@ -14,12 +14,12 @@ public class SwaggerConfig {
     @Bean
     OpenAPI customOpenAPI() {
         Server userServer = new Server();
-        userServer.url("https://localhost:8443");
+        userServer.url("https://localhost:8444");
         return new OpenAPI()
                 .servers(List.of(userServer))
                 .info(
                         new Info()
-                                .title("Service marketplace service")
+                                .title("Specialist service")
                                 .version("1.0")
                                 .description("BoopApplication")
                 );

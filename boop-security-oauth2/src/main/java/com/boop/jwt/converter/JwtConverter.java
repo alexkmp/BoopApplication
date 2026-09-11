@@ -1,4 +1,4 @@
-package com.boop.converter;
+package com.boop.jwt.converter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

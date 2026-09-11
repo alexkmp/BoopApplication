@@ -1,8 +1,8 @@
 package com.boop.owners.persistence;
 
 import com.boop.exception.BoopNotFoundException;
+import com.boop.owners.dto.PetOwnerDataFullResponse;
 import com.boop.owners.dto.PetOwnerRequest;
-import com.boop.owners.dto.PetOwnerResponse;
 import com.boop.owners.mapper.PetOwnerMapper;
 import com.boop.owners.persistence.entity.PetOwner;
 import com.boop.owners.persistence.repository.PetOwnerRepository;
@@ -28,21 +28,29 @@ public class PetOwnerService {
 
     private Logger log = LoggerFactory.getLogger(PetOwnerService.class);
 
-    public List<PetOwnerResponse> getAllPetOwners() {
+    public List<PetOwnerDataFullResponse> getAllPetOwners() {
         log.info("Get all pet owners");
         return petOwnerMapper.toResponses(petOwnerRepository.findAll());
     }
 
-    @Cacheable(value = "owner", key = "#id")
-    public PetOwnerResponse getById(Long id) throws BoopNotFoundException {
+    @Cacheable(value = "owner.byId", key = "#id")
+    public PetOwnerDataFullResponse getById(Long id) throws BoopNotFoundException {
         log.info("Get pet owner by id: {}", id);
         Optional<PetOwner> owner = petOwnerRepository.findById(id);
-        if (!owner.isPresent()) throw new BoopNotFoundException("Owner with id:" + id + "not found");
-        return petOwnerMapper.toResponse(owner.get());
+        return owner.map((value) -> petOwnerMapper.toResponse(value))
+                .orElseThrow(() -> new BoopNotFoundException("Owner with id:" + id + "not found"));
     }
 
-    @CachePut(value = "owner", key = "#result.id()")
-    public PetOwnerResponse create(PetOwnerRequest petOwnerRequest) {
+    @Cacheable(value = "owner.byLogin", key = "#login")
+    public PetOwnerDataFullResponse findByLogin(String login) throws BoopNotFoundException {
+        log.info("Get pet owner by login: {}", login);
+        Optional<PetOwner> owner = petOwnerRepository.findPetOwnerByLogin(login);
+        return owner.map((value) -> petOwnerMapper.toResponse(value))
+                .orElseThrow(() -> new BoopNotFoundException("Owner with login:" + login + "not found"));
+    }
+
+    @CachePut(value = "owner.byId", key = "#result.id()")
+    public PetOwnerDataFullResponse create(PetOwnerRequest petOwnerRequest) {
         log.info("Create pet owner, request: {}", petOwnerRequest);
         PetOwner owner = new PetOwner(
                 petOwnerRequest.login(),
@@ -55,8 +63,8 @@ public class PetOwnerService {
         return petOwnerMapper.toResponse(petOwnerRepository.save(owner));
     }
 
-    @CachePut(value = "owner", key = "#result.id()")
-    public PetOwnerResponse update(Long id, PetOwnerRequest petOwnerRequest) throws BoopNotFoundException {
+    @CachePut(value = "owner.byId", key = "#result.id()")
+    public PetOwnerDataFullResponse update(Long id, PetOwnerRequest petOwnerRequest) throws BoopNotFoundException {
         log.info("Update pet owner with id: {}, request: {}", id, petOwnerRequest);
         Optional<PetOwner> owner = petOwnerRepository.findById(id);
         owner.ifPresentOrElse(o -> {
@@ -67,7 +75,7 @@ public class PetOwnerService {
         return petOwnerMapper.toResponse(petOwnerRepository.save(owner.get()));
     }
 
-    @CacheEvict(value = "owner", key = "#id")
+    @CacheEvict(value = "owner.byId", key = "#id")
     public Boolean delete(Long id) {
         log.info("Delete pet owner with id: {}", id);
         petOwnerRepository.deleteById(id);

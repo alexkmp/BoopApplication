@@ -2,7 +2,7 @@ package com.boop.owners.dto;
 
 import java.util.List;
 
-public record PetOwnerResponse(
+public record PetOwnerDataFullResponse(
         Long id,
         String login,
         String phone,

@@ -41,6 +41,15 @@ public class KeycloakAdminRpcService extends KeycloakAdminGrpc.KeycloakAdminImpl
     }
 
     @Override
+    public void getUserInfoByUsername(GetUserByUsernameRequest request,
+                                io.grpc.stub.StreamObserver<GetUserReply> responseObserver) {
+        log.info("Get user by username: {}, exact: {}", request.getUsername(), request.getExact());
+        GetUserReply userInfoByUsername = keycloakAdminApiService.getUserInfoByUsername(request.getUsername(), request.getExact());
+        responseObserver.onNext(userInfoByUsername);
+        responseObserver.onCompleted();
+    }
+
+    @Override
     public void createUser(CreateUserRequest request,
                            io.grpc.stub.StreamObserver<CreateUserReply> responseObserver) {
         log.info("Create user in keycloak, request :{}", request);

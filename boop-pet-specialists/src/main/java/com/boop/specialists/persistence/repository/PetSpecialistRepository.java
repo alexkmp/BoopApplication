@@ -10,7 +10,5 @@ public interface PetSpecialistRepository extends CrudRepository<PetSpecialist, L
 
     List<PetSpecialist> findAll();
 
-    Optional<PetSpecialist> findPetOwnersByPhone(String phone);
-
-    Optional<PetSpecialist> findPetOwnerByEmail(String email);
+    Optional<PetSpecialist> findPetSpecialistByLogin(String login);
 }

@@ -2,7 +2,7 @@ package com.boop.owners.api;
 
 import com.boop.exception.BoopNotFoundException;
 import com.boop.owners.dto.PetOwnerRequest;
-import com.boop.owners.dto.PetOwnerResponse;
+import com.boop.owners.dto.PetOwnerDataFullResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -29,7 +29,7 @@ public interface PetOwnerOperations {
     @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping
     @ResponseBody
-    Mono<List<PetOwnerResponse>> getAll();
+    Mono<List<PetOwnerDataFullResponse>> getAll();
 
     @Operation(
             summary = "Get pet owner by id",
@@ -43,12 +43,12 @@ public interface PetOwnerOperations {
     @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("{id}")
     @ResponseBody
-    Mono<PetOwnerResponse> getById(@PathVariable Long id) throws BoopNotFoundException;
+    Mono<PetOwnerDataFullResponse> getById(@PathVariable Long id) throws BoopNotFoundException;
 
     @Operation(
-            summary = "Find pet owner by phone or email",
-            description = "Find pet owner by phone or email",
-            tags = {"pet owner", "find", "by phone", "by email"}
+            summary = "Find pet owner by login",
+            description = "Find pet owner by login",
+            tags = {"pet owner", "find", "by login"}
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "${api.responseCodes.ok.description}"),
@@ -57,7 +57,7 @@ public interface PetOwnerOperations {
     @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/find")
     @ResponseBody
-    Mono<PetOwnerResponse> findByPhoneOrEmail(@RequestParam("phone") String phone, @RequestParam("email") String email);
+    Mono<PetOwnerDataFullResponse> findByLogin(@RequestParam("login") String login);
 
     @Operation(
             summary = "Create pet owner",
@@ -69,7 +69,7 @@ public interface PetOwnerOperations {
     })
     @PostMapping()
     @ResponseBody
-    Mono<PetOwnerResponse> create(@RequestBody PetOwnerRequest petOwnerRequest);
+    Mono<PetOwnerDataFullResponse> create(@RequestBody PetOwnerRequest petOwnerRequest);
 
     @Operation(
             summary = "Update pet owner",
@@ -83,7 +83,7 @@ public interface PetOwnerOperations {
     @SecurityRequirement(name = "Bearer Authentication")
     @PutMapping("{id}")
     @ResponseBody
-    Mono<PetOwnerResponse> update(@PathVariable Long id, @RequestBody PetOwnerRequest petOwnerRequest) throws BoopNotFoundException;
+    Mono<PetOwnerDataFullResponse> update(@PathVariable Long id, @RequestBody PetOwnerRequest petOwnerRequest) throws BoopNotFoundException;
 
     @Operation(
             summary = "Delete pet owner",

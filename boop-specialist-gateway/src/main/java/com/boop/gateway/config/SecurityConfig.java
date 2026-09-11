@@ -35,14 +35,9 @@ public class SecurityConfig {
                                 "/openapi/**",
                                 "/webjars/**",
                                 "/api/admin/**",
-                                "/owners-actuator/**",
                                 "/specialists-actuator/**",
-                                "/service-marketplace-actuator/**",
-                                "/owners/openapi/**",
                                 "/specialists/openapi/**",
-                                "/owners/webjars/**",
                                 "/specialists/webjars/**").permitAll()
-                        .pathMatchers(HttpMethod.POST, "/api/pet-owners").permitAll()
                         .pathMatchers(HttpMethod.POST, "/api/pet-specialists").permitAll()
                         .anyExchange().authenticated()
                 )

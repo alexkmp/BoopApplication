@@ -121,6 +121,18 @@ public class KeycloakAdminApiService {
         return mapToGetUserReply(userResource.toRepresentation(), roleRepresentations);
     }
 
+    public GetUserReply getUserInfoByUsername(String username, Boolean exact) {
+        UserResource userResource = getUserResourceByUsername(username, exact);
+        List<RoleRepresentation> roleRepresentations = userResource.roles().clientLevel(keycloakAdminApiProperties.clientUuid()).listAll();
+        return mapToGetUserReply(userResource.toRepresentation(), roleRepresentations);
+    }
+
+    private UserResource getUserResourceByUsername(String username, Boolean exact) {
+        UserRepresentation userRepresentation = usersResourceInstance().searchByUsername(username, exact).stream().findFirst().orElseThrow(
+                () -> new BoopKeycloakException(MessageFormat.format("User with login: {0} not found", username)));
+        return usersResourceInstance().get(userRepresentation.getId());
+    }
+
     public String createUser(CreateUserRequest createUserRequest) {
         var user = buildUserRepresentation(createUserRequest);
 
