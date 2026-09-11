@@ -46,9 +46,9 @@ public interface PetSpecialistOperations {
     Mono<PetSpecialistResponse> getById(@PathVariable Long id) throws BoopNotFoundException;
 
     @Operation(
-            summary = "Find pet specialist by phone or email",
-            description = "Find pet specialist by phone or email",
-            tags = {"pet specialist", "find", "by phone", "by email"}
+            summary = "Find pet specialist by login",
+            description = "Find pet specialist by login",
+            tags = {"pet specialist", "find", "by login"}
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "${api.responseCodes.ok.description}"),
@@ -57,7 +57,7 @@ public interface PetSpecialistOperations {
     @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/find")
     @ResponseBody
-    Mono<PetSpecialistResponse> findByPhoneOrEmail(@RequestParam("phone") String phone, @RequestParam("email") String email);
+    Mono<PetSpecialistResponse> findByLogin(@RequestParam("login") String login);
 
     @Operation(
             summary = "Create pet specialist",

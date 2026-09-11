@@ -32,8 +32,8 @@ public class PetSpecialistController implements PetSpecialistOperations {
 
     @Override
     @PreAuthorize("hasAnyRole('SPECIALIST')")
-    public Mono<PetSpecialistResponse> findByPhoneOrEmail(String phone, String email) {
-        return Mono.just(null);
+    public Mono<PetSpecialistResponse> findByLogin(String login) {
+        return Mono.just(petSpecialistService.findByLogin(login));
     }
 
     @Override

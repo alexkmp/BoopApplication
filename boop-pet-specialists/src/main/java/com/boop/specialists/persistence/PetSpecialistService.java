@@ -1,6 +1,7 @@
 package com.boop.specialists.persistence;
 
 import com.boop.exception.BoopNotFoundException;
+import com.boop.owners.dto.PetOwnerDataFullResponse;
 import com.boop.specialists.dto.PetSpecialistRequest;
 import com.boop.specialists.dto.PetSpecialistResponse;
 import com.boop.specialists.mapper.PetSpecialistMapper;
@@ -33,7 +34,7 @@ public class PetSpecialistService {
         return petSpecialistMapper.toResponses(petSpecialistRepository.findAll());
     }
 
-    @Cacheable(value = "specialist", key = "#id")
+    @Cacheable(value = "specialist.byId", key = "#id")
     public PetSpecialistResponse getById(Long id) throws BoopNotFoundException {
         log.info("Get pet specialist by id: {}", id);
         Optional<PetSpecialist> specialist = petSpecialistRepository.findById(id);
@@ -41,7 +42,15 @@ public class PetSpecialistService {
         return petSpecialistMapper.toResponse(specialist.get());
     }
 
-    @CachePut(value = "specialist", key = "#result.id()")
+    @Cacheable(value = "specialist.byLogin", key = "#login")
+    public PetSpecialistResponse findByLogin(String login) throws BoopNotFoundException {
+        log.info("Get pet owner by login: {}", login);
+        Optional<PetSpecialist> owner = petSpecialistRepository.findPetSpecialistByLogin(login);
+        return owner.map((value) -> petSpecialistMapper.toResponse(value))
+                .orElseThrow(() -> new BoopNotFoundException("Specialist with login:" + login + "not found"));
+    }
+
+    @CachePut(value = "specialist.byId", key = "#result.id()")
     public PetSpecialistResponse create(PetSpecialistRequest petSpecialistRequest) {
         log.info("Create pet specialist, request: {}", petSpecialistRequest);
         PetSpecialist specialist = new PetSpecialist(
@@ -55,7 +64,7 @@ public class PetSpecialistService {
         return petSpecialistMapper.toResponse(petSpecialistRepository.save(specialist));
     }
 
-    @CachePut(value = "specialist", key = "#result.id()")
+    @CachePut(value = "specialist,byId", key = "#result.id()")
     public PetSpecialistResponse update(Long id, PetSpecialistRequest petSpecialistRequest) throws BoopNotFoundException {
         log.info("Update pet specialist with id: {}, request: {}", id, petSpecialistRequest);
         Optional<PetSpecialist> specialist = petSpecialistRepository.findById(id);
@@ -67,7 +76,7 @@ public class PetSpecialistService {
         return petSpecialistMapper.toResponse(petSpecialistRepository.save(specialist.get()));
     }
 
-    @CacheEvict(value = "specialist", key = "#id")
+    @CacheEvict(value = "specialist.byId", key = "#id")
     public Boolean delete(Long id) {
         log.info("Delete pet specialist with id: {}", id);
         petSpecialistRepository.deleteById(id);

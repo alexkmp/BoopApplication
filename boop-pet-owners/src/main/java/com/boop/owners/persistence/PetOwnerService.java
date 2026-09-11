@@ -49,7 +49,7 @@ public class PetOwnerService {
                 .orElseThrow(() -> new BoopNotFoundException("Owner with login:" + login + "not found"));
     }
 
-    @CachePut(value = "owner", key = "#result.id()")
+    @CachePut(value = "owner.byId", key = "#result.id()")
     public PetOwnerDataFullResponse create(PetOwnerRequest petOwnerRequest) {
         log.info("Create pet owner, request: {}", petOwnerRequest);
         PetOwner owner = new PetOwner(
@@ -63,7 +63,7 @@ public class PetOwnerService {
         return petOwnerMapper.toResponse(petOwnerRepository.save(owner));
     }
 
-    @CachePut(value = "owner", key = "#result.id()")
+    @CachePut(value = "owner.byId", key = "#result.id()")
     public PetOwnerDataFullResponse update(Long id, PetOwnerRequest petOwnerRequest) throws BoopNotFoundException {
         log.info("Update pet owner with id: {}, request: {}", id, petOwnerRequest);
         Optional<PetOwner> owner = petOwnerRepository.findById(id);
@@ -75,7 +75,7 @@ public class PetOwnerService {
         return petOwnerMapper.toResponse(petOwnerRepository.save(owner.get()));
     }
 
-    @CacheEvict(value = "owner", key = "#id")
+    @CacheEvict(value = "owner.byId", key = "#id")
     public Boolean delete(Long id) {
         log.info("Delete pet owner with id: {}", id);
         petOwnerRepository.deleteById(id);
