@@ -241,6 +241,24 @@ services:
       - keycloak
       - postgres
 
+  bff-specialist:
+    build: boop-bff-specialist
+    image: specialist-domain/boop-bff-specialist
+    container_name: boop-bff-specialist
+    mem_limit: 512m
+    environment:
+      - LOGGING_CONFIG=/config-rep/logback.xml
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CONFIG_LOCATION=file:/config-rep/application.yml,file:/config-rep/boop-bff-specialist.yml
+      - KEYCLOAK_OAUTH_CLIENT_ID=${KEYCLOAK_OAUTH_CLIENT_ID}
+      - KEYCLOAK_OAUTH_CLIENT_SECRET=${KEYCLOAK_OAUTH_CLIENT_SECRET}
+    volumes:
+      - $PWD/config-rep:/config-rep
+    depends_on:
+      - keycloak
+      - specialist
+      - specialist-gateway
+
   specialist:
     build: boop-pet-specialists
     image: specialist-domain/boop-pet-specialists
@@ -305,7 +323,7 @@ services:
 
   specialist-gateway:
     build: boop-specialist-gateway
-    image: boop-specialist-gateway
+    image: gateway/boop-specialist-gateway
     container_name: boop-specialist-gateway
     mem_limit: 512m
     ports:

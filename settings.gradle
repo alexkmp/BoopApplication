@@ -1,5 +1,5 @@
 rootProject.name = 'boop-application'
 include 'boop-api', 'boop-core', 'boop-security-oauth2',
         'boop-owner-gateway', 'boop-bff-owner', 'boop-pet-owners',
-        'boop-specialist-gateway', 'boop-pet-specialists',
+        'boop-specialist-gateway', 'boop-bff-specialist', 'boop-pet-specialists',
         'boop-keycloak-admin', 'boop-service-marketplace'

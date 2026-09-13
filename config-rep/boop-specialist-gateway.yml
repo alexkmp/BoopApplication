@@ -40,49 +40,32 @@ spring:
       server:
         webflux:
           routes:
-            # pet-owner routes
-            - id: admin
-              uri: http://boop-pet-owners
-              predicates:
-                - Path=/api/admin/**
-              filters:
-                - name: CircuitBreaker
-                  args:
-#                    id: keycloakApiCircuitBreaker
-                    name: KeycloakApiCircuitBreaker
-                    fallbackUri: forward:/fallback
-                    statusCodes:
-                      - 500
-                      - 503
-                      - 404
-                      #- 401
-
             #pet-specialist routes
-            - id: pet-specialists
-              uri: http://boop-pet-specialists
+            - id: bff-specialist
+              uri: http://boop-bff-specialist
               predicates:
-                - Path=/api/pet-specialists/**
+                - Path=/api/bff/pet-specialists/**
               filters:
                 - TokenRelay
 
-            - id: pet-specialists-swagger-ui
-              uri: http://boop-pet-specialists
+            - id: bff-specialist-swagger-ui
+              uri: http://boop-bff-specialist
               predicates:
-                - Path=/specialists/openapi/**
+                - Path=/bff-specialist/openapi/**
               filters:
                 - TokenRelay
 
-            - id: pet-specialists-swagger-ui-webjars
-              uri: http://boop-pet-specialists
+            - id: bff-specialist-swagger-ui-webjars
+              uri: http://boop-bff-specialist
               predicates:
-                - Path=/specialists/webjars/**
+                - Path=/bff-specialist/webjars/**
               filters:
                 - TokenRelay
 
-            - id: pet-specialists-actuator
-              uri: http://boop-pet-specialists
+            - id: bff-specialist-actuator
+              uri: http://boop-bff-specialist
               predicates:
-                - Path=/specialists-actuator/**
+                - Path=/bff-specialist-actuator/**
               filters:
                 - TokenRelay
 
@@ -135,8 +118,8 @@ springdoc:
     urls:
       - url: /openapi/v3/api-docs
         name: API Gateway Service
-      - name: Pet Specialists
-        url: https://localhost:8444/specialists/openapi/v3/api-docs
+      - name: BFF Pet Specialists
+        url: https://localhost:8444/bff-specialist/openapi/v3/api-docs
 
 logging:
   level:

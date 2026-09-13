@@ -34,11 +34,10 @@ public class SecurityConfig {
                                 "/error/**",
                                 "/openapi/**",
                                 "/webjars/**",
-                                "/api/admin/**",
-                                "/specialists-actuator/**",
-                                "/specialists/openapi/**",
-                                "/specialists/webjars/**").permitAll()
-                        .pathMatchers(HttpMethod.POST, "/api/pet-specialists").permitAll()
+                                "/bff-specialist-actuator/**",
+                                "/bff-specialist/openapi/**",
+                                "/bff-specialist/webjars/**").permitAll()
+                        .pathMatchers(HttpMethod.POST, "/api/bff/pet-specialists").permitAll()
                         .anyExchange().authenticated()
                 )
                 .oauth2Login(login -> login.authenticationSuccessHandler(customSuccessHandler()))

@@ -34,7 +34,6 @@ public class SecurityConfig {
                                 "/error/**",
                                 "/openapi/**",
                                 "/webjars/**",
-                                "/api/admin/**",
                                 "/bff-owner-actuator/**",
                                 "/bff-owner/openapi/**",
                                 "/bff-owner/webjars/**").permitAll()

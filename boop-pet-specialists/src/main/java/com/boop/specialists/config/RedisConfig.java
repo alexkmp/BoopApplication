@@ -32,6 +32,7 @@ public class RedisConfig implements CachingConfigurer {
                         .allowIfSubType("java.util.")
                         .allowIfSubType("java.lang.")
                         .allowIfSubType("java.time.")
+                        .allowIfSubType("java.math.")
                         .build()
                 ).build();
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
