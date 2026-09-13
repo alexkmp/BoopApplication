@@ -3,7 +3,7 @@ package com.boop.specialists.controller;
 import com.boop.exception.BoopNotFoundException;
 import com.boop.specialists.api.PetSpecialistOperations;
 import com.boop.specialists.dto.PetSpecialistRequest;
-import com.boop.specialists.dto.PetSpecialistResponse;
+import com.boop.specialists.dto.PetSpecialistDataFullResponse;
 import com.boop.specialists.persistence.PetSpecialistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,30 +20,30 @@ public class PetSpecialistController implements PetSpecialistOperations {
 
     @Override
     @PreAuthorize("hasAnyRole('SPECIALIST')")
-    public Mono<List<PetSpecialistResponse>> getAll() {
+    public Mono<List<PetSpecialistDataFullResponse>> getAll() {
         return Mono.just(petSpecialistService.getAllPetSpecialists());
     }
 
     @Override
     @PreAuthorize("hasAnyRole('SPECIALIST')")
-    public Mono<PetSpecialistResponse> getById(Long id) throws BoopNotFoundException {
+    public Mono<PetSpecialistDataFullResponse> getById(Long id) throws BoopNotFoundException {
         return Mono.just(petSpecialistService.getById(id));
     }
 
     @Override
     @PreAuthorize("hasAnyRole('SPECIALIST')")
-    public Mono<PetSpecialistResponse> findByLogin(String login) {
+    public Mono<PetSpecialistDataFullResponse> findByLogin(String login) {
         return Mono.just(petSpecialistService.findByLogin(login));
     }
 
     @Override
-    public Mono<PetSpecialistResponse> create(PetSpecialistRequest petSpecialistRequest) {
+    public Mono<PetSpecialistDataFullResponse> create(PetSpecialistRequest petSpecialistRequest) {
         return Mono.just(petSpecialistService.create(petSpecialistRequest));
     }
 
     @Override
     @PreAuthorize("hasAnyRole('SPECIALIST')")
-    public Mono<PetSpecialistResponse> update(Long id, PetSpecialistRequest petSpecialistRequest) throws BoopNotFoundException {
+    public Mono<PetSpecialistDataFullResponse> update(Long id, PetSpecialistRequest petSpecialistRequest) throws BoopNotFoundException {
         return Mono.just(petSpecialistService.update(id, petSpecialistRequest));
     }
 
