@@ -1,9 +1,10 @@
-package com.boop.owners.config;
+package com.boop.config;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CachingConfigurerSupport;
+import org.springframework.cache.annotation.CachingConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
@@ -17,14 +18,16 @@ import tools.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 
 import java.time.Duration;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Configuration
 @RequiredArgsConstructor
-public class RedisConfig extends CachingConfigurerSupport {
+public class RedisConfig implements CachingConfigurer {
 
-    private final RedisConnectionFactory redisConnectionFactory;
+    private final BoopRedisProperties redisProperties;
 
     @Bean
+    @Primary
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisSerializer<Object> serializer = GenericJacksonJsonRedisSerializer.builder()
                 .enableDefaultTyping(BasicPolymorphicTypeValidator.builder()
@@ -32,6 +35,7 @@ public class RedisConfig extends CachingConfigurerSupport {
                         .allowIfSubType("java.util.")
                         .allowIfSubType("java.lang.")
                         .allowIfSubType("java.time.")
+                        .allowIfSubType("java.math.")
                         .build()
                 ).build();
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
@@ -49,15 +53,15 @@ public class RedisConfig extends CachingConfigurerSupport {
         RedisCacheConfiguration defaults = RedisCacheConfiguration.defaultCacheConfig()
                 .disableCachingNullValues()
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(redisTemplate.getValueSerializer()));
+
         RedisCacheConfiguration fiveMinuteTtlExpirationDefaults = defaults.entryTtl(Duration.ofMinutes(5));
 
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(redisTemplate.getConnectionFactory());
-        Map<String, RedisCacheConfiguration> initialCaches = Map.of(
-                "owner.byId", defaults.entryTtl(Duration.ofSeconds(10)),
-                "owner.byLogin", defaults.entryTtl(Duration.ofSeconds(20))
-        );
-
-        return RedisCacheManager.builder(redisConnectionFactory)
+        Map<String, RedisCacheConfiguration> initialCaches = redisProperties.getTtl().entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey, v -> defaults.entryTtl(Duration.ofSeconds(v.getValue())))
+                );
+        return RedisCacheManager.builder(redisTemplate.getConnectionFactory())
                 .cacheWriter(redisCacheWriter)
                 .cacheDefaults(fiveMinuteTtlExpirationDefaults)
                 .withInitialCacheConfigurations(initialCaches)
