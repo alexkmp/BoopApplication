@@ -39,6 +39,14 @@ keycloak:
 zipkin:
   host: localhost
 
+redis:
+  ttl:
+    owner.byId: 10
+    owner.byLogin: 20
+    specialist.byId: 10
+    specialist.byLogin: 20
+    service-claim: 10
+
 springdoc:
   cache:
     disabled: true
