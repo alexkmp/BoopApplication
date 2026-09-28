@@ -14,6 +14,21 @@ spring:
         jwt:
           issuer-uri: http://${keycloak.host}:8080/realms/${keycloak.realm}
           jwk-set-uri: http://${keycloak.host}:8080/realms/${keycloak.realm}/protocol/openid-connect/certs
+  kafka:
+    bootstrapServers: kafka1:9092,kafka2:9092,kafka3:9092
+    topicConfigs:
+      owner:
+        topic-name: owner-topic
+        partition-count: 3
+        replica-count: 3
+      specialist:
+        topic-name: specialist-topic
+        partition-count: 3
+        replica-count: 3
+      service-marketplace:
+        topic-name: service-marketplace-topic
+        partition-count: 3
+        replica-count: 3
 
 management:
   endpoints:

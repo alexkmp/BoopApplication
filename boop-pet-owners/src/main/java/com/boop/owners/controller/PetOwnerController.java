@@ -4,7 +4,9 @@ import com.boop.exception.BoopNotFoundException;
 import com.boop.owners.api.PetOwnerOperations;
 import com.boop.owners.dto.PetOwnerRequest;
 import com.boop.owners.dto.PetOwnerDataFullResponse;
+import com.boop.owners.event.PetOwnerEventProducer;
 import com.boop.owners.persistence.PetOwnerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
@@ -12,13 +14,11 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class PetOwnerController implements PetOwnerOperations {
 
-    private PetOwnerService petOwnerService;
-
-    public PetOwnerController(PetOwnerService petOwnerService) {
-        this.petOwnerService = petOwnerService;
-    }
+    private final PetOwnerService petOwnerService;
+    private final PetOwnerEventProducer petOwnerEventProducer;
 
     @Override
     @PreAuthorize("hasAnyRole('OWNER')")
@@ -27,15 +27,17 @@ public class PetOwnerController implements PetOwnerOperations {
     }
 
     @Override
-    //@PreAuthorize("hasAnyRole('OWNER')")
+    @PreAuthorize("hasAnyRole('OWNER')")
     public Mono<PetOwnerDataFullResponse> getById(Long id) throws BoopNotFoundException {
         return Mono.just(petOwnerService.getById(id));
     }
 
     @Override
-    //@PreAuthorize("hasAnyRole('OWNER')")
+    @PreAuthorize("hasAnyRole('OWNER')")
     public Mono<PetOwnerDataFullResponse> findByLogin(String login) {
-        return Mono.just(petOwnerService.findByLogin(login));
+        PetOwnerDataFullResponse response = petOwnerService.findByLogin(login);
+        petOwnerEventProducer.sendMessage("byLogin","owner-topic", response);
+        return Mono.just(response);
     }
 
     @Override
