@@ -1,6 +1,8 @@
 package com.boop.config;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CachingConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
 public class RedisConfig implements CachingConfigurer {
 
     private final BoopRedisProperties redisProperties;
+    private Logger log = LoggerFactory.getLogger(RedisConfig.class);
 
     @Bean
     @Primary
@@ -50,6 +53,7 @@ public class RedisConfig implements CachingConfigurer {
 
     @Bean
     public RedisCacheManager redisCacheManager(RedisTemplate redisTemplate) {
+        log.info("redis cache manager config: {}", redisProperties.getTtl());
         RedisCacheConfiguration defaults = RedisCacheConfiguration.defaultCacheConfig()
                 .disableCachingNullValues()
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(redisTemplate.getValueSerializer()));
