@@ -15,7 +15,8 @@ import java.util.List;
 @Access(AccessType.FIELD)
 @Getter
 @Setter
-@RequiredArgsConstructor
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class ServiceClaim extends BaseEntity {
 
@@ -31,7 +32,7 @@ public class ServiceClaim extends BaseEntity {
 
     @NonNull
     @Column(name = "pet_id")
-    BigInteger petId;
+    Long petId;
 
     @NonNull
     @Column(name = "start_date")

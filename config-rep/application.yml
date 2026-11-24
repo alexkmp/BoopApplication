@@ -16,6 +16,16 @@ spring:
           jwk-set-uri: http://${keycloak.host}:8080/realms/${keycloak.realm}/protocol/openid-connect/certs
   kafka:
     bootstrapServers: kafka1:9092,kafka2:9092,kafka3:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
+      properties:
+        spring.json.add.type.headers: true
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+      properties:
+        spring.json.trusted.packages: "com.boop.event.*"
     topicConfigs:
       owner:
         topic-name: owner-topic
@@ -67,10 +77,10 @@ springdoc:
     disabled: true
 
 logging:
-  pattern:
-    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+#  pattern:
+#    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
   level:
-    com.boop: INFO
+    com.boop: DEBUG
 
 api:
   responseCodes:

@@ -53,7 +53,7 @@ public class RedisConfig implements CachingConfigurer {
 
     @Bean
     public RedisCacheManager redisCacheManager(RedisTemplate redisTemplate) {
-        log.info("redis cache manager config: {}", redisProperties.getTtl());
+        log.debug("redis cache manager config: {}", redisProperties.getTtl());
         RedisCacheConfiguration defaults = RedisCacheConfiguration.defaultCacheConfig()
                 .disableCachingNullValues()
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(redisTemplate.getValueSerializer()));

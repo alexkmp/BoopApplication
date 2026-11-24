@@ -139,7 +139,7 @@ public class KeycloakAdminApiService {
         try (Response response = usersResourceInstance().create(user)) {
             int statusCode = response.getStatus();
             switch (statusCode) {
-                case 201 -> log.info("User {} successfully created in Keycloak", createUserRequest.getLogin());
+                case 201 -> log.debug("User {} successfully created in Keycloak", createUserRequest.getLogin());
                 case 409 -> {
                     log.error("Duplicate user {}", createUserRequest.getLogin());
                     throw new BoopKeycloakException(MessageFormat.format("Duplicate user: {0}", createUserRequest.getLogin()));
@@ -168,7 +168,7 @@ public class KeycloakAdminApiService {
         try (Response response = usersResourceInstance().delete(userId)) {
             int statusCode = response.getStatus();
             switch (statusCode) {
-                case 204 -> log.info("No content");
+                case 204 -> log.debug("No content");
                 case 400 -> {
                     log.error("Bad request for deletion user {}", userId);
                     throw new BoopKeycloakException(MessageFormat.format("Bad request for deletion user {}", userId));

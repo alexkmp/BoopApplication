@@ -29,7 +29,7 @@ public class KafkaTopicConfig {
 
     @Bean
     public KafkaAdmin.NewTopics boopTopics() {
-        log.info("kafka topic config: {}, {}", boopKafkaProperties.getBootstrapServers(), boopKafkaProperties.getTopicConfigs());
+        log.debug("kafka topic config: {}, {}", boopKafkaProperties.getBootstrapServers(), boopKafkaProperties.getTopicConfigs());
         return new KafkaAdmin.NewTopics(
                 boopKafkaProperties.getTopicConfigs().values().stream()
                         .map(this::toNewTopic).toArray(NewTopic[] ::new)

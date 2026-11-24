@@ -24,7 +24,7 @@ public class KeycloakAdminRpcService extends KeycloakAdminGrpc.KeycloakAdminImpl
     @Override
     public void getAllUsersInfo(com.google.protobuf.Empty request,
                                  io.grpc.stub.StreamObserver<AllUsersReply> responseObserver) {
-        log.info("Get all users from keycloak");
+        log.debug("Get all users from keycloak");
         List<GetUserReply> allUsers = keycloakAdminApiService.getAllUsers();
         AllUsersReply allUsersReply = AllUsersReply.newBuilder().addAllUserArray(allUsers).build();
         responseObserver.onNext(allUsersReply);
@@ -34,7 +34,7 @@ public class KeycloakAdminRpcService extends KeycloakAdminGrpc.KeycloakAdminImpl
     @Override
     public void getUserInfoById(GetUserByIdRequest request,
                                 io.grpc.stub.StreamObserver<GetUserReply> responseObserver) {
-        log.info("Get user by id: {}", request.getUuid());
+        log.debug("Get user by id: {}", request.getUuid());
         GetUserReply userInfoById = keycloakAdminApiService.getUserInfoById(request.getUuid());
         responseObserver.onNext(userInfoById);
         responseObserver.onCompleted();
@@ -43,7 +43,7 @@ public class KeycloakAdminRpcService extends KeycloakAdminGrpc.KeycloakAdminImpl
     @Override
     public void getUserInfoByUsername(GetUserByUsernameRequest request,
                                 io.grpc.stub.StreamObserver<GetUserReply> responseObserver) {
-        log.info("Get user by username: {}, exact: {}", request.getUsername(), request.getExact());
+        log.debug("Get user by username: {}, exact: {}", request.getUsername(), request.getExact());
         GetUserReply userInfoByUsername = keycloakAdminApiService.getUserInfoByUsername(request.getUsername(), request.getExact());
         responseObserver.onNext(userInfoByUsername);
         responseObserver.onCompleted();
@@ -52,7 +52,7 @@ public class KeycloakAdminRpcService extends KeycloakAdminGrpc.KeycloakAdminImpl
     @Override
     public void createUser(CreateUserRequest request,
                            io.grpc.stub.StreamObserver<CreateUserReply> responseObserver) {
-        log.info("Create user in keycloak, request :{}", request);
+        log.debug("Create user in keycloak, request :{}", request);
         String uuid = keycloakAdminApiService.createUser(request);
         responseObserver.onNext(CreateUserReply.newBuilder().setUuid(uuid).build());
         responseObserver.onCompleted();
@@ -61,7 +61,7 @@ public class KeycloakAdminRpcService extends KeycloakAdminGrpc.KeycloakAdminImpl
     @Override
     public void updateUser(UpdateUserRequest request,
                            io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
-        log.info("Update user in keycloak, request :{}", request);
+        log.debug("Update user in keycloak, request :{}", request);
         String uuid = keycloakAdminApiService.updateUser(request);
         responseObserver.onNext(Empty.newBuilder().build());
         responseObserver.onCompleted();
@@ -70,7 +70,7 @@ public class KeycloakAdminRpcService extends KeycloakAdminGrpc.KeycloakAdminImpl
     @Override
     public void deleteUser(DeleteUserRequest request,
                     io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
-        log.info("Delete user with id {} in keycloak", request.getUuid());
+        log.debug("Delete user with id {} in keycloak", request.getUuid());
         keycloakAdminApiService.deleteUser(request.getUuid());
         responseObserver.onNext(Empty.newBuilder().build());
         responseObserver.onCompleted();
@@ -79,7 +79,7 @@ public class KeycloakAdminRpcService extends KeycloakAdminGrpc.KeycloakAdminImpl
     @Override
     public void getAllRoles(com.google.protobuf.Empty request,
                      io.grpc.stub.StreamObserver<AllRolesReply> responseObserver) {
-        log.info("Get all roles in keycloak");
+        log.debug("Get all roles in keycloak");
         List<GetRoleReply> allRoles = keycloakAdminApiService.getAllRoles();
         AllRolesReply allRolesReply = AllRolesReply.newBuilder().addAllRoleArray(allRoles).build();
         responseObserver.onNext(allRolesReply);
@@ -89,7 +89,7 @@ public class KeycloakAdminRpcService extends KeycloakAdminGrpc.KeycloakAdminImpl
     @Override
     public void getRoleByName(GetRoleByNameRequest request,
                        io.grpc.stub.StreamObserver<GetRoleReply> responseObserver) {
-        log.info("Get role by name: {} in keycloak", request.getName());
+        log.debug("Get role by name: {} in keycloak", request.getName());
         GetRoleReply roleReply = keycloakAdminApiService.getRoleByName(request.getName());
         responseObserver.onNext(roleReply);
         responseObserver.onCompleted();
@@ -98,7 +98,7 @@ public class KeycloakAdminRpcService extends KeycloakAdminGrpc.KeycloakAdminImpl
     @Override
     public void createRole(CreateRoleRequest request,
                            io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
-        log.info("Create role with name: {} in keycloak", request.getName());
+        log.debug("Create role with name: {} in keycloak", request.getName());
         keycloakAdminApiService.createRole(request);
         responseObserver.onNext(Empty.newBuilder().build());
         responseObserver.onCompleted();
@@ -107,7 +107,7 @@ public class KeycloakAdminRpcService extends KeycloakAdminGrpc.KeycloakAdminImpl
     @Override
     public void assignRole(AssignRoleToUserRequest request,
                     io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
-        log.info("Assign role with name: {} to user: {} in keycloak", request.getRoleName(), request.getUuid());
+        log.debug("Assign role with name: {} to user: {} in keycloak", request.getRoleName(), request.getUuid());
         keycloakAdminApiService.assignRole(request.getUuid(), request.getRoleName());
         responseObserver.onNext(Empty.newBuilder().build());
         responseObserver.onCompleted();
@@ -116,7 +116,7 @@ public class KeycloakAdminRpcService extends KeycloakAdminGrpc.KeycloakAdminImpl
     @Override
     public void removeRole(RemoveRoleToUserRequest request,
                            io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
-        log.info("Remove role with name: {} from user: {} in keycloak", request.getRoleName(), request.getUuid());
+        log.debug("Remove role with name: {} from user: {} in keycloak", request.getRoleName(), request.getUuid());
         keycloakAdminApiService.removeRole(request.getUuid(), request.getRoleName());
         responseObserver.onNext(Empty.newBuilder().build());
         responseObserver.onCompleted();

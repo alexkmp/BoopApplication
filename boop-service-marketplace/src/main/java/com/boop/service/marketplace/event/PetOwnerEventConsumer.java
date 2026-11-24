@@ -13,16 +13,16 @@ public class PetOwnerEventConsumer {
 
     @KafkaListener(topics = "owner-topic", groupId = "byLogin")
     public void listenGroupByLogin(PetOwnerDataFullResponse response) {
-        log.info("Received message in topic: owner-topic, group: byLogin, response: {}", response);
+        log.debug("Received message in topic: owner-topic, group: byLogin, response: {}", response);
     }
 
     @KafkaListener(topics = "owner-topic", groupId = "updated")
     public void listenGroupUpdated(PetOwnerDataFullResponse response) {
-        log.info("Received message in topic: owner-topic, group: updated, message: {}", response);
+        log.debug("Received message in topic: owner-topic, group: updated, message: {}", response);
     }
 
     @KafkaListener(topics = "owner-topic", groupId = "deleted")
     public void listenGroupDeleted(PetOwnerDataFullResponse response) {
-        log.info("Received message in topic: owner-topic, group: deleted, message: {}", response);
+        log.debug("Received message in topic: owner-topic, group: deleted, message: {}", response);
     }
 }

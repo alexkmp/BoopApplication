@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -29,55 +28,59 @@ public class PetOwnerService {
     private Logger log = LoggerFactory.getLogger(PetOwnerService.class);
 
     public List<PetOwnerDataFullResponse> getAllPetOwners() {
-        log.info("Get all pet owners");
+        log.debug("Get all pet owners");
         return petOwnerMapper.toResponses(petOwnerRepository.findAll());
     }
 
     @Cacheable(value = "owner.byId", key = "#id")
     public PetOwnerDataFullResponse getById(Long id) throws BoopNotFoundException {
-        log.info("Get pet owner by id: {}", id);
-        Optional<PetOwner> owner = petOwnerRepository.findById(id);
-        return owner.map((value) -> petOwnerMapper.toResponse(value))
-                .orElseThrow(() -> new BoopNotFoundException("Owner with id:" + id + "not found"));
+        log.debug("Get pet owner by id: {}", id);
+        PetOwner owner = petOwnerRepository.findById(id).orElseThrow(
+                () -> new BoopNotFoundException("Owner with id:" + id + "not found")
+        );
+        return petOwnerMapper.toResponse(owner);
+
     }
 
     @Cacheable(value = "owner.byLogin", key = "#login")
     public PetOwnerDataFullResponse findByLogin(String login) throws BoopNotFoundException {
-        log.info("Get pet owner by login: {}", login);
-        Optional<PetOwner> owner = petOwnerRepository.findPetOwnerByLogin(login);
-        return owner.map((value) -> petOwnerMapper.toResponse(value))
-                .orElseThrow(() -> new BoopNotFoundException("Owner with login:" + login + "not found"));
+        log.debug("Get pet owner by login: {}", login);
+        PetOwner owner = petOwnerRepository.findPetOwnerByLogin(login).orElseThrow(
+                () -> new BoopNotFoundException("Owner with login:" + login + "not found")
+        );
+        return petOwnerMapper.toResponse(owner);
+
     }
 
     @CachePut(value = "owner.byId", key = "#result.id()")
     public PetOwnerDataFullResponse create(PetOwnerRequest petOwnerRequest) {
-        log.info("Create pet owner, request: {}", petOwnerRequest);
-        PetOwner owner = new PetOwner(
-                petOwnerRequest.login(),
-                petOwnerRequest.phone(),
-                petOwnerRequest.email(),
-                petOwnerRequest.firstName(),
-                petOwnerRequest.lastName(),
-                petOwnerRequest.about()
-        );
+        log.debug("Create pet owner, request: {}", petOwnerRequest);
+        PetOwner owner = PetOwner.builder()
+                .login(petOwnerRequest.login())
+                .phone(petOwnerRequest.phone())
+                .email(petOwnerRequest.email())
+                .firstName(petOwnerRequest.firstName())
+                .lastName(petOwnerRequest.lastName())
+                .about(petOwnerRequest.about())
+                .build();
         return petOwnerMapper.toResponse(petOwnerRepository.save(owner));
     }
 
     @CachePut(value = "owner.byId", key = "#result.id()")
     public PetOwnerDataFullResponse update(Long id, PetOwnerRequest petOwnerRequest) throws BoopNotFoundException {
-        log.info("Update pet owner with id: {}, request: {}", id, petOwnerRequest);
-        Optional<PetOwner> owner = petOwnerRepository.findById(id);
-        owner.ifPresentOrElse(o -> {
-            o.setEmail(petOwnerRequest.email());
-            o.setPhone(petOwnerRequest.phone());
-        },() -> new BoopNotFoundException("Owner with id:" + id + "not found"));
+        log.debug("Update pet owner with id: {}, request: {}", id, petOwnerRequest);
+        PetOwner owner = petOwnerRepository.findById(id).orElseThrow(
+                () -> new BoopNotFoundException("Owner with id:" + id + "not found")
+        );
+        owner.setEmail(petOwnerRequest.email());
+        owner.setPhone(petOwnerRequest.phone());
 
-        return petOwnerMapper.toResponse(petOwnerRepository.save(owner.get()));
+        return petOwnerMapper.toResponse(petOwnerRepository.save(owner));
     }
 
     @CacheEvict(value = "owner.byId", key = "#id")
     public Boolean delete(Long id) {
-        log.info("Delete pet owner with id: {}", id);
+        log.debug("Delete pet owner with id: {}", id);
         petOwnerRepository.deleteById(id);
         return true;
     }

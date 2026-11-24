@@ -108,4 +108,48 @@
                                  referencedTableName="service_claim"
                                  referencedColumnNames="id"/>
     </changeSet>
+
+
+    <changeSet id="2" author="alex">
+        <createTable tableName="outbox_event">
+            <column name="id" type="bigserial" remarks="ID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="version" type="bigint" remarks="Version">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date" type="timestamp" remarks="Creation date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modify_date" type="timestamp" remarks="Modify date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(20)" defaultValue="PENDING">
+                <constraints nullable="false"/>
+            </column>
+            <column name="aggregate_type" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="aggregate_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payload" type="jsonb">
+                <constraints nullable="false"/>
+            </column>
+            <column name="attempts" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="procession_date" type="timestamp" remarks="Creation date">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="outbox_event" indexName="idx_outbox_event_for_pooling">
+            <column name="creation_date"/>
+            <column name="status"/>
+        </createIndex>
+    </changeSet>
 </databaseChangeLog>

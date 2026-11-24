@@ -44,27 +44,27 @@ public class KeycloakApiService {
     }
 
     public List<KeycloakUserInfo> getAll() {
-        log.info("Get all users registered in keycloak");
+        log.debug("Get all users registered in keycloak");
         AllUsersReply allUsersInfo = keycloakAdminBlockingStub.getAllUsersInfo(Empty.newBuilder().build());
         return allUsersInfo.getUserArrayList().stream().map(this::mapToUserDto).collect(Collectors.toUnmodifiableList());
     }
 
     public KeycloakUserInfo getUserInfoById(String userId) {
-        log.info("Get user by userId: {}", userId);
+        log.debug("Get user by userId: {}", userId);
         GetUserByIdRequest request = GetUserByIdRequest.newBuilder().setUuid(userId).build();
         GetUserReply userInfoById = keycloakAdminBlockingStub.getUserInfoById(request);
         return mapToUserDto(userInfoById);
     }
 
     public KeycloakUserInfo getUserInfoByUsername(String username, Boolean exact) {
-        log.info("Get user by username: {}, exact: {}", username, exact);
+        log.debug("Get user by username: {}, exact: {}", username, exact);
         GetUserByUsernameRequest request = GetUserByUsernameRequest.newBuilder().setUsername(username).setExact(exact).build();
         GetUserReply userInfoById = keycloakAdminBlockingStub.getUserInfoByUsername(request);
         return mapToUserDto(userInfoById);
     }
 
     public String createUser(CreateUserRequest createUserRequest) {
-        log.info("Create user in keycloak, request: {}", createUserRequest);
+        log.debug("Create user in keycloak, request: {}", createUserRequest);
         com.boop.grpc.MessageTypes.CreateUserRequest request = com.boop.grpc.MessageTypes.CreateUserRequest.newBuilder()
                 .setLogin(createUserRequest.login())
                 .setFirstName(createUserRequest.firstName())
@@ -76,7 +76,7 @@ public class KeycloakApiService {
     }
 
     public Boolean updateUser(String userId, UpdateUserRequest updateUserRequest) {
-        log.info("Update user in keycloak, userId: {}, request: {}", userId, updateUserRequest);
+        log.debug("Update user in keycloak, userId: {}, request: {}", userId, updateUserRequest);
         com.boop.grpc.MessageTypes.UpdateUserRequest request = com.boop.grpc.MessageTypes.UpdateUserRequest.newBuilder()
                 .setUuid(userId)
                 .setFirstName(updateUserRequest.firstName())
@@ -89,7 +89,7 @@ public class KeycloakApiService {
     }
 
     public Boolean deleteUser(String userId) {
-        log.info("Delete user with userId: {}", userId);
+        log.debug("Delete user with userId: {}", userId);
         DeleteUserRequest request = DeleteUserRequest.newBuilder()
                 .setUuid(userId).build();
         keycloakAdminBlockingStub.deleteUser(request);
@@ -97,7 +97,7 @@ public class KeycloakApiService {
     }
 
     public Boolean assignRole(String userId, String roleName) {
-        log.info("Assign role to user with userId: {}, role: {}", userId, roleName);
+        log.debug("Assign role to user with userId: {}, role: {}", userId, roleName);
         AssignRoleToUserRequest request = AssignRoleToUserRequest.newBuilder()
                 .setUuid(userId)
                 .setRoleName(roleName).build();
@@ -106,7 +106,7 @@ public class KeycloakApiService {
     }
 
     public Boolean removeRole(String userId, String roleName) {
-        log.info("Remove role from user with userId: {}, role: {}", userId, roleName);
+        log.debug("Remove role from user with userId: {}, role: {}", userId, roleName);
         RemoveRoleToUserRequest request = RemoveRoleToUserRequest.newBuilder()
                 .setUuid(userId)
                 .setRoleName(roleName).build();
@@ -115,7 +115,7 @@ public class KeycloakApiService {
     }
 
     public Boolean createRole(KeycloakUserRole keycloakUserRoleRequest) {
-        log.info("Create role in realm, request: ", keycloakUserRoleRequest);
+        log.debug("Create role in realm, request: ", keycloakUserRoleRequest);
         CreateRoleRequest request = CreateRoleRequest.newBuilder()
                 .setName(keycloakUserRoleRequest.name())
                 .setDescription(keycloakUserRoleRequest.description())
@@ -125,13 +125,13 @@ public class KeycloakApiService {
     }
 
     public List<KeycloakUserRole> getAllRoles() {
-        log.info("Get all roles in realm");
+        log.debug("Get all roles in realm");
         AllRolesReply allRoles = keycloakAdminBlockingStub.getAllRoles(Empty.newBuilder().build());
         return allRoles.getRoleArrayList().stream().map(this::mapToUserRole).collect(Collectors.toUnmodifiableList());
     }
 
     public KeycloakUserRole getRoleByName(String roleName) {
-        log.info("Get role by name: {}", roleName);
+        log.debug("Get role by name: {}", roleName);
         GetRoleByNameRequest request = GetRoleByNameRequest.newBuilder()
                 .setName(roleName).build();
         GetRoleReply role = keycloakAdminBlockingStub.getRoleByName(request);

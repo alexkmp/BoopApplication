@@ -18,11 +18,11 @@ public class PetOwnerEventProducer {
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
     public void sendMessage(String topicKey, String topicName, Object object) {
-        log.info("calling PetOwnerEventProducer.sendMessage: {}:{}, {}", topicName, topicKey, object);
+        log.debug("calling PetOwnerEventProducer.sendMessage: {}:{}, {}", topicName, topicKey, object);
         CompletableFuture<SendResult<String, Object>> future = kafkaTemplate.send(topicName, topicKey, object);
         future.whenComplete((result, ex) -> {
             if (ex == null) {
-                log.info("Sent message={} with offset={}", object, result.getRecordMetadata().offset());
+                log.debug("Sent message={} with offset={}", object, result.getRecordMetadata().offset());
             } else {
                 log.error("Unable to send message={} due to: {}", object, ex.getMessage());
             }

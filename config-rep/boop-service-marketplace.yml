@@ -28,6 +28,11 @@ spring:
     api:
       version: 1.0
 
+outbox:
+  poller:
+    fixed-delay: 5000
+    batch-size: 100
+
 management:
   endpoints:
     web:

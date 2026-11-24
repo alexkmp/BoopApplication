@@ -11,7 +11,8 @@ import java.util.Set;
 @Access(AccessType.FIELD)
 @Getter
 @Setter
-@RequiredArgsConstructor
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class Pet extends BaseEntity {
 

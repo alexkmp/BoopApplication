@@ -4,7 +4,6 @@ import com.boop.exception.BoopNotFoundException;
 import com.boop.service.marketplace.api.ServiceClaimOperations;
 import com.boop.service.marketplace.dto.ServiceClaimRequest;
 import com.boop.service.marketplace.dto.ServiceClaimResponse;
-import com.boop.service.marketplace.event.PetServiceMarketplaceEventProducer;
 import com.boop.service.marketplace.persistence.ServiceClaimService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +16,6 @@ import java.util.List;
 public class ServiceClaimController implements ServiceClaimOperations {
 
     private final ServiceClaimService serviceClaimService;
-    private final PetServiceMarketplaceEventProducer petServiceMarketplaceEventProducer;
 
     @Override
     public Mono<List<ServiceClaimResponse>> getAll() {
@@ -26,7 +24,6 @@ public class ServiceClaimController implements ServiceClaimOperations {
 
     @Override
     public Mono<ServiceClaimResponse> getById(Long id) throws BoopNotFoundException {
-        petServiceMarketplaceEventProducer.sendMessage("test","service-marketplace-topic", "getById: " + id);
         return Mono.just(serviceClaimService.getServiceClaimById(id));
     }
 

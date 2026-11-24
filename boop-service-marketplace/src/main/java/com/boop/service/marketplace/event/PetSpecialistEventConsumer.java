@@ -12,16 +12,16 @@ public class PetSpecialistEventConsumer {
 
     @KafkaListener(topics = "specialist-topic", groupId = "byLogin")
     public void listenGroupByLogin(String message) {
-        log.info("Received message in topic: specialist-topic, group: byLogin, message: {}", message);
+        log.debug("Received message in topic: specialist-topic, group: byLogin, message: {}", message);
     }
 
     @KafkaListener(topics = "specialist-topic", groupId = "updated")
     public void listenGroupUpdated(String message) {
-        log.info("Received message in topic: specialist-topic, group: updated, message: {}", message);
+        log.debug("Received message in topic: specialist-topic, group: updated, message: {}", message);
     }
 
     @KafkaListener(topics = "specialist-topic", groupId = "deleted")
     public void listenGroupDeleted(String message) {
-        log.info("Received message in topic: specialist-topic, group: deleted, message: {}", message);
+        log.debug("Received message in topic: specialist-topic, group: deleted, message: {}", message);
     }
 }

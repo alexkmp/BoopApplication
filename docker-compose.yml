@@ -295,6 +295,8 @@ services:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
     volumes:
       - $PWD/config-rep:/config-rep
+    ports:
+      - "8088:80"
     depends_on:
       - postgres
 

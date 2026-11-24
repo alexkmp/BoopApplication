@@ -10,7 +10,8 @@ import java.math.BigInteger;
 @Access(AccessType.FIELD)
 @Getter
 @Setter
-@RequiredArgsConstructor
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class SpecialistBid extends BaseEntity {
 
