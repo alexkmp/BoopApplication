@@ -1,4 +1,4 @@
-package com.boop.owners.event;
+package com.boop.specialists.event;
 
 import com.boop.event.marketplace.ServiceClaimCreated;
 import com.boop.event.marketplace.ServiceClaimDeleted;
@@ -11,24 +11,24 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 @Component
-@KafkaListener(topics = "service-marketplace-topic", groupId = "pet-owners")
-public class PetServiceMarketplaceEventConsumerImpl {
+@KafkaListener(topics = "service-marketplace-topic", groupId = "pet-specialists")
+public class PetServiceMarketplaceEventConsumer {
 
-    private Logger log = LoggerFactory.getLogger(PetServiceMarketplaceEventConsumerImpl.class);
+    private Logger log = LoggerFactory.getLogger(PetServiceMarketplaceEventConsumer.class);
 
     @KafkaHandler
     public void listenServiceClaimCreated(ServiceClaimCreated event) {
-        log.debug("Received ServiceClaimCreated in topic: service-marketplace-topic, group: pet-owners, event: {}", event);
+        log.debug("Received ServiceClaimCreated in topic: service-marketplace-topic, group: pet-specialists, event: {}", event);
     }
 
     @KafkaHandler
     public void listenServiceClaimUpdated(ServiceClaimUpdated event) {
-        log.debug("Received ServiceClaimUpdated in topic: service-marketplace-topic, group: pet-owners, event: {}", event);
+        log.debug("Received ServiceClaimUpdated in topic: service-marketplace-topic, group: pet-specialists, event: {}", event);
     }
 
     @KafkaHandler
     public void listenServiceClaimDeleted(ServiceClaimDeleted event) {
-        log.debug("Received ServiceClaimDeleted in topic: service-marketplace-topic, group: pet-owners, event: {}", event);
+        log.debug("Received ServiceClaimDeleted in topic: service-marketplace-topic, group: pet-specialists, event: {}", event);
     }
 
     @KafkaHandler(isDefault = true)

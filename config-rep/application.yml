@@ -39,6 +39,10 @@ spring:
         topic-name: service-marketplace-topic
         partition-count: 3
         replica-count: 3
+      service-marketplace-dlt:
+        topic-name: service-marketplace-topic-dlt
+        partition-count: 3
+        replica-count: 3
 
 management:
   endpoints:
@@ -77,8 +81,8 @@ springdoc:
     disabled: true
 
 logging:
-#  pattern:
-#    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+  pattern:
+    console: "%green(%d{yyyy-MM-dd'T'HH:mm:ss.SSSX}) %highlight(%-5level) %red([%thread]) %magenta([%X{traceId:-},%X{spanId:-}]) %cyan(${spring.application.name}) %yellow(%logger{36}) - %msg%n"
   level:
     com.boop: DEBUG
 

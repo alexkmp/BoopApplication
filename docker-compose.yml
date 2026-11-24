@@ -208,7 +208,7 @@ services:
     container_name: boop-bff-owner
     mem_limit: 512m
     environment:
-      - LOGGING_CONFIG=/config-rep/logback.xml
+      - LOGGING_CONFIG=/config-rep/logback-spring.xml
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CONFIG_LOCATION=file:/config-rep/application.yml,file:/config-rep/boop-bff-owner.yml
       - KEYCLOAK_OAUTH_CLIENT_ID=${KEYCLOAK_OAUTH_CLIENT_ID}
@@ -226,7 +226,7 @@ services:
     container_name: boop-pet-owners
     mem_limit: 512m
     environment:
-        - LOGGING_CONFIG=/config-rep/logback.xml
+        - LOGGING_CONFIG=/config-rep/logback-spring.xml
         - SPRING_PROFILES_ACTIVE=docker
         - SPRING_CONFIG_LOCATION=file:/config-rep/application.yml,file:/config-rep/boop-pet-owners.yml
         - POSTGRES_PASSWORD=${POSTGRES_PET_OWNER_PASSWORD}
@@ -247,7 +247,7 @@ services:
     container_name: boop-bff-specialist
     mem_limit: 512m
     environment:
-      - LOGGING_CONFIG=/config-rep/logback.xml
+      - LOGGING_CONFIG=/config-rep/logback-spring.xml
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CONFIG_LOCATION=file:/config-rep/application.yml,file:/config-rep/boop-bff-specialist.yml
       - KEYCLOAK_OAUTH_CLIENT_ID=${KEYCLOAK_OAUTH_CLIENT_ID}
@@ -265,7 +265,7 @@ services:
     container_name: boop-pet-specialists
     mem_limit: 512m
     environment:
-      - LOGGING_CONFIG=/config-rep/logback.xml
+      - LOGGING_CONFIG=/config-rep/logback-spring.xml
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CONFIG_LOCATION=file:/config-rep/application.yml,file:/config-rep/boop-pet-specialists.yml
       - POSTGRES_PASSWORD=${POSTGRES_PET_SPECIALIST_PASSWORD}
@@ -286,7 +286,7 @@ services:
     container_name: boop-service-marketplace
     mem_limit: 512m
     environment:
-      - LOGGING_CONFIG=/config-rep/logback.xml
+      - LOGGING_CONFIG=/config-rep/logback-spring.xml
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CONFIG_LOCATION=file:/config-rep/application.yml,file:/config-rep/boop-service-marketplace.yml
       - POSTGRES_PASSWORD=${POSTGRES_SERVICE_MARKETPLACE_PASSWORD}
@@ -308,7 +308,7 @@ services:
     ports:
       - "8443:8443"
     environment:
-      - LOGGING_CONFIG=/config-rep/logback.xml
+      - LOGGING_CONFIG=/config-rep/logback-spring.xml
       - SPRING_PROFILES_ACTIVE=docker
       - SERVER_SSL_KEY_STORE=file:/keystore/boop-cert.p12
       - SPRING_CONFIG_LOCATION=file:/config-rep/application.yml,file:/config-rep/boop-owner-gateway.yml
@@ -331,7 +331,7 @@ services:
     ports:
       - "8444:8443"
     environment:
-      - LOGGING_CONFIG=/config-rep/logback.xml
+      - LOGGING_CONFIG=/config-rep/logback-spring.xml
       - SPRING_PROFILES_ACTIVE=docker
       - SERVER_SSL_KEY_STORE=file:/keystore/boop-cert.p12
       - SPRING_CONFIG_LOCATION=file:/config-rep/application.yml,file:/config-rep/boop-specialist-gateway.yml
@@ -352,7 +352,7 @@ services:
     container_name: boop-keycloak-admin
     mem_limit: 512m
     environment:
-      - LOGGING_CONFIG=/config-rep/logback.xml
+      - LOGGING_CONFIG=/config-rep/logback-spring.xml
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CONFIG_LOCATION=file:/config-rep/application.yml,file:/config-rep/boop-keycloak-admin.yml
       - KEYCLOAK_ADMIN_CLIENT_ID=${KEYCLOAK_ADMIN_CLIENT_ID}
