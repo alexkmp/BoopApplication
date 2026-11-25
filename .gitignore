@@ -39,9 +39,10 @@ out/
 .vscode/
 
 .env
-es-data/
+os-data/
 kafka/
 keycloak/
 keystore/
 postgres/pg_volume
 redis/data
+sql_scripts/
