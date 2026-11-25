@@ -8,7 +8,8 @@ import lombok.*;
 @Access(AccessType.FIELD)
 @Getter
 @Setter
-@RequiredArgsConstructor
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class Note extends BaseEntity {
 

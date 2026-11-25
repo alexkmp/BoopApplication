@@ -1,5 +1,8 @@
 package com.boop.service.marketplace.mapper;
 
+import com.boop.event.marketplace.ServiceClaimCreated;
+import com.boop.event.marketplace.ServiceClaimDeleted;
+import com.boop.event.marketplace.ServiceClaimUpdated;
 import com.boop.mapper.ResponseMapper;
 import com.boop.service.marketplace.dto.ServiceClaimResponse;
 import com.boop.service.marketplace.persistence.entity.ServiceClaim;
@@ -26,6 +29,36 @@ public class ServiceClaimMapper implements ResponseMapper<ServiceClaimResponse, 
                 serviceClaim.getPriceMax(),
                 specialistBidMapper.toResponses(serviceClaim.getSpecialistBids()),
                 serviceReviewMapper.toResponses(serviceClaim.getServiceReviews())
+        );
+    }
+
+    public ServiceClaimCreated toServiceClaimCreated(ServiceClaim serviceClaim) {
+        return new ServiceClaimCreated(
+                serviceClaim.getId(),
+                serviceClaim.getServiceClaimType(),
+                serviceClaim.getPetId(),
+                serviceClaim.getStartDate(),
+                serviceClaim.getEndDate(),
+                serviceClaim.getPriceMin(),
+                serviceClaim.getPriceMax()
+        );
+    }
+
+    public ServiceClaimUpdated toServiceClaimUpdated(ServiceClaim serviceClaim) {
+        return new ServiceClaimUpdated(
+                serviceClaim.getId(),
+                serviceClaim.getServiceClaimType(),
+                serviceClaim.getPetId(),
+                serviceClaim.getStartDate(),
+                serviceClaim.getEndDate(),
+                serviceClaim.getPriceMin(),
+                serviceClaim.getPriceMax()
+        );
+    }
+
+    public ServiceClaimDeleted toServiceClaimDeleted(Long id) {
+        return new ServiceClaimDeleted(
+                id
         );
     }
 }

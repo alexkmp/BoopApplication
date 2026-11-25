@@ -10,7 +10,8 @@ import java.time.LocalDateTime;
 @Access(AccessType.FIELD)
 @Getter
 @Setter
-@RequiredArgsConstructor
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class MedicalExamination extends BaseEntity {
 

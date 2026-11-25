@@ -10,7 +10,7 @@ import java.util.List;
 @Access(AccessType.FIELD)
 @Getter
 @Setter
-@RequiredArgsConstructor
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class PetOwner extends BaseEntity {

@@ -34,6 +34,8 @@ dependencies {
 	implementation "net.devh:grpc-client-spring-boot-starter:${grpcStarterVersion}"
 	implementation "net.devh:grpc-server-spring-boot-starter:${grpcStarterVersion}"
 
+	implementation 'org.springframework.boot:spring-boot-starter-kafka'
+
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
 	implementation 'io.micrometer:micrometer-core'

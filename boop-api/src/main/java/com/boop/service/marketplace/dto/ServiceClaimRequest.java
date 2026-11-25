@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public record ServiceClaimRequest(
         ServiceClaimType serviceClaimType,
-        BigInteger petId,
+        Long petId,
         LocalDateTime startDate,
         LocalDateTime endDate,
         BigDecimal priceMin,
