@@ -170,37 +170,51 @@ services:
       - kafka2
       - kafka3
 
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
-    container_name: elasticsearch
+  opensearch:
+    image: opensearchproject/opensearch:2.19.2
+    container_name: opensearch
     environment:
       - discovery.type=single-node
-      - xpack.security.enabled=false
-      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+      - DISABLE_SECURITY_PLUGIN=true          # only for dev
+      - OPENSEARCH_JAVA_OPTS=-Xms1g -Xmx1g
     ports:
       - "9200:9200"
+      - "9600:9600"
     volumes:
-      - $PWD/es-data:/usr/share/elasticsearch/data
+      - $PWD/os-data:/usr/share/opensearch/data
 
-  kibana:
-    image: docker.elastic.co/kibana/kibana:8.12.0
-    container_name: kibana
+  opensearch-ism-init:
+    image: curlimages/curl:8.10.1
+    container_name: opensearch-ism-init
+    depends_on:
+      - opensearch
+    volumes:
+      - $PWD/config-rep/ism-policy.json:/tmp/ism-policy.json:ro
+      - $PWD/scripts/ism-init.sh:/ism-init.sh:ro
+    entrypoint: [ "/bin/sh", "/ism-init.sh" ]
+    restart: "no"
+
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:2.19.2
+    container_name: opensearch-dashboards
     ports:
       - "5601:5601"
     depends_on:
-      - elasticsearch
+      - opensearch
     environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - OPENSEARCH_HOSTS=["http://opensearch:9200"]
+      - DISABLE_SECURITY_DASHBOARDS_PLUGIN=true # Только для разработки!
 
   logstash:
-    image: docker.elastic.co/logstash/logstash:8.12.0
+    build: logstash-opensearch
+    image: logstash-opensearch
     container_name: logstash
     ports:
       - "5044:5044"
     volumes:
       - $PWD/config-rep/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     depends_on:
-      - elasticsearch
+      - opensearch
 
   bff-owner:
     build: boop-bff-owner
